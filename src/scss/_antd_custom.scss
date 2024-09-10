@@ -1,0 +1,86 @@
+//menu
+
+.ant-menu-vertical {
+  //background-color: $background-color-sider !important;
+
+  .ant-menu-item-selected {
+    color: $text-color-layout-selected !important;
+    font-weight: 600;
+    //background-color: $background-color-sider-menuItem-hover !important;
+  }
+  .ant-menu-item-no-selected {
+    color: $text-color-layout !important;
+    font-weight: 600;
+  }
+}
+
+.ant-spin-dot {
+  color: $btn-main-color !important;
+}
+
+.ant-tree-treenode-disabled {
+  .ant-tree-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: #8a8a8a;
+  }
+  .anticon {
+    font-weight: 500;
+    color: #8a8a8a;
+    svg {
+      font-size: 13px;
+    }
+  }
+}
+.ant-tree-title {
+  font-size: 15px;
+}
+
+.ant-table-container {
+  border: 1px solid #e1e1e1 !important; //màu khung viền bọc toàn bộ bảng bảng
+}
+
+.ant-table-thead {
+  .ant-table-cell {
+    background-color: #f5f5f5 !important; // background tiêu đề
+    border-right: 1px solid #e1e1e1 !important; //màu border phải
+    border-bottom: 1px solid #e1e1e1 !important;
+    text-align: center !important;
+  }
+}
+
+.ant-table-tbody {
+  .ant-table-cell {
+    border-right: 1px solid #e1e1e1 !important; //màu border phải
+    border-bottom: 1px solid #e1e1e1 !important;
+  }
+}
+
+.no-padding {
+  padding: 0 !important;
+}
+
+.react-datepicker-popper {
+  z-index: 9999 !important;
+}
+
+//  .ant-table-cell {
+//   text-align: 'center' !important;
+// }
+
+.ant-input-disabled {
+  color: black !important;
+}
+.ant-select-selection-item-content {
+  color: black !important;
+}
+.dashboard-card{
+  background: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  margin: 10px 0;
+}
+
+:where(.css-dev-only-do-not-override-1uq9j6g).ant-checkbox-disabled+span {
+  color: black !important ;
+}

@@ -1,0 +1,29 @@
+.appQuarterPicker_main{
+  display: flex;
+  flex-direction: column;
+
+  span {
+    color: $danger-color;
+  }
+
+  .ant-picker {
+    border-color: $btn-main-color;
+    border-radius: 6px;
+  }
+
+  .ant-picker:focus,
+  .ant-picker:hover,
+  .ant-picker-focused {
+    border-color: $btn-main-color !important;
+    box-shadow: 0 0 0 2px rgba(0, 105, 0, 0.2) !important;
+  }
+  .ant-picker-affix-wrapper:hover {
+    border-color: $btn-main-color !important;
+  }
+
+  .ant-picker-input{
+    svg {
+      color: $btn-main-color !important;
+    }
+  }
+}

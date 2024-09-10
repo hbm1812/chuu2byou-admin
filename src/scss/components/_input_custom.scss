@@ -1,0 +1,47 @@
+.appInput_main {
+  display: flex;
+  flex-direction: column;
+
+  span {
+    color: $danger-color;
+  }
+  .input_main {
+  }
+
+  .ant-input {
+    border-color: $btn-main-color;
+    border-radius: 6px;
+  }
+  .ant-input:focus,
+  .ant-input:hover,
+  .ant-input-focused {
+    border-color: $btn-main-color !important;
+    box-shadow: 0 0 0 2px rgba(0, 105, 0, 0.2) !important;
+  }
+  .ant-input-affix-wrapper:hover {
+    border-color: $btn-main-color !important;
+  }
+
+  .text_error {
+    margin: 10px 0px;
+    color: $danger-color;
+  }
+  .bg_disabled{
+    background-color: $white-color;
+    color: $black-color
+  }
+
+  .ant-input-number {
+    border-color: $btn-main-color;
+    border-radius: 6px;
+  }
+  .ant-input-number:focus,
+  .ant-input-number:hover,
+  .ant-input-number-focused {
+    border-color: $btn-main-color !important;
+    box-shadow: 0 0 0 2px rgba(0, 105, 0, 0.2) !important;
+  }
+  .ant-input-number-affix-wrapper:hover {
+    border-color: $btn-main-color !important;
+  }
+}

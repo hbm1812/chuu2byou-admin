@@ -1,0 +1,36 @@
+.page_container {
+  .page_container_header {
+    padding: 0px 0px 10px 0px;
+    margin: 0px 0px 5px 0px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 0.7px solid $black-color;
+    .page_container_header_title {
+      display: flex;
+      flex-direction: row;
+      gap: 15px;
+      h2 {
+        text-transform: uppercase;
+        font-weight: 700;
+        font-size: 18px;
+        color: $text-color-layout;
+      }
+    }
+    .icon_pageContainer {
+      position: relative;
+      top: 5px;
+      color: $text-color-layout !important;
+    }
+    .page_container_header_extra {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+    }
+  }
+}
+
+.tab_container_header_extra{
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}

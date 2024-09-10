@@ -1,0 +1,92 @@
+//main
+@import "./_global.scss";
+@import "./_antd_custom.scss";
+
+//layout
+@import "../layouts/MainLayout/styles/_main_layout.scss";
+@import "../layouts/AuthLayout/styles/auth_layout";
+
+//component
+@import "../components/common/PageContainer/style/page_container";
+@import "../scss/components/button_custom";
+@import "../scss/components/input_custom";
+@import "../scss/components/selected_custom";
+@import "../scss/components/datepicker_custom";
+@import "../scss/components/table_custom";
+@import "../scss/components/app_panel_dm";
+@import "../scss/components/app_tree_view";
+@import "../scss/components/form_container";
+@import "../scss/components/app_quarterpicker";
+@import "../components/common/TreePhanQuyenVaiTro/styles/tree_phan_quyen_vai_tro";
+
+@import "../scss/components/app_checkbox";
+
+//modules
+@import "../modules/Core/styles/core_children1";
+
+
+
+.flipbook-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f8f8f8;
+
+  .flipbook {
+    width: 800px;
+    height: 600px;
+    perspective: 1000px;
+    position: relative;
+
+    .page {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: white;
+      border: 1px solid #ccc;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transform-origin: left;
+      transition: transform 1s;
+
+      &:nth-child(2) {
+        transform-origin: right;
+      }
+
+      .page-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        padding: 20px;
+
+        h1 {
+          font-size: 24px;
+          margin-bottom: 20px;
+        }
+
+        img {
+          width: 200px;
+          height: auto;
+          margin-bottom: 20px;
+        }
+
+        p {
+          font-size: 18px;
+        }
+      }
+    }
+
+    &.flipped .page:first-child {
+      transform: rotateY(-180deg) translateX(10px) translateY(-20px);
+      z-index: 1;
+    }
+
+    &.flipped .page:nth-child(2) {
+      transform: rotateY(0deg) translateX(10px) translateY(20px);
+      z-index: 2;
+    }
+  }
+}
+

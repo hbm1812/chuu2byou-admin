@@ -1,0 +1,145 @@
+.header_layout {
+  background: $background-color-header;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+  border-bottom: 2.5px solid;
+  z-index: 1000;
+  border-image: linear-gradient(to right, #cea43b, #fae785) 1;
+
+  .remix-logo-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    padding: 20px 0px;
+    text-align: center;
+    padding-left: 30px;
+    height: 55px;
+    .trigger {
+      font-size: 23px;
+      color: $white-color;
+      font-weight: 700;
+    }
+
+    h2 {
+      margin-top: 15px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: $white-color;
+    }
+  }
+}
+
+.main_layout {
+  background-color: $white-color !important;
+  min-height: 92vh !important;
+}
+
+.sider_layout {
+  overflow-y: auto;
+  min-height: 92vh !important;
+  background-color: $background-color-sider !important;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  .menu_layout {
+    background-color: $white-color !important;
+    .ant-menu-item-icon {
+      font-size: 15px;
+    }
+    .ant-menu-item-no-selected {
+      color: $text-color-layout !important;
+      font-weight: 600;
+      font-size: 15px;
+      &:hover {
+        color: $text-color-layout-selected !important;
+      }
+    }
+    .ant-menu-item-selected {
+      color: $text-color-layout-selected !important;
+      font-weight: 600;
+      font-size: 15px;
+      background-color: $background-color-sider-menuItem-hover;
+    }
+    .ant-menu-submenu-title {
+      color: $text-color-layout !important;
+    }
+    .ant-menu-submenu-selected .ant-menu-submenu-title {
+      background-color: $background-color-sider-menuItem-hover;
+      color: $text-color-layout-selected !important;
+    }
+
+
+    .ant-menu-sub {
+      background-color: #fff !important;
+      .ant-menu-item {
+        color: $text-color-layout !important;
+        font-weight: 400;
+        font-size: 14px;
+
+      }
+      .ant-menu-item-active{
+        color: $text-color-layout !important;
+        font-weight: 400;
+        font-size: 14px;
+
+      }
+      .ant-menu-item-selected {
+        color: $text-color-layout-selected !important;
+      }
+    }
+  }
+}
+
+.content_main_layout {
+  background-color: $color-gray;
+  overflow: hidden;
+  height: calc(100vh - 64px);
+  .header_pathname{
+    display: flex;
+    flex-direction: row;
+    max-height: 40px;
+    height: 100%;
+    background: $background-color-sider;
+    align-items: center;
+    padding: 0px 10px 0px 10px;
+    gap: 10px;
+    .icon_pathname{
+      font-size: 30px;
+      color: $background-color-header;
+      font-weight: 600;
+      cursor: pointer;
+      z-index: 1000;
+    }
+  .breadcrumb_pathname{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    span {
+      font-size: 16px;
+      font-weight: 600;
+      color: $background-color-header;
+    }
+  }
+  }
+  .content {
+    margin: 0px 10px;
+    overflow-y: auto;
+    flex: 1;
+  }
+}
+
+.thong_tin_tai_khoan{
+  display: flex;
+  flex-direction: column;
+  .ten_tai_khoan{
+    font-size: 18px;
+    color: $white-color;
+  }
+  .don_vi_tai_khoan{
+    margin-top: -40px;
+    color: $white-color;
+    font-size: 12px;
+  }
+}

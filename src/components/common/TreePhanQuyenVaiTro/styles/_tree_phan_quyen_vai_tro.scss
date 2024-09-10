@@ -1,0 +1,66 @@
+.tree_phan_quyen_chuc_nang {
+  width: 100%;
+}
+
+.tree_phan_quyen_chuc_nang .ant-tree-treenode {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tree_phan_quyen_chuc_nang .ant-tree-title {
+  flex: 1;
+}
+
+.tree_phan_quyen_chuc_nang .ant-tree-checkbox {
+  margin-right: 10px;
+}
+
+.custom-style-data-tree {
+  width: 100% !important;
+  align-items: center !important;
+  display: flex !important;
+}
+
+.row-tree-data-role {
+  width: 100%;
+  display: flex;
+  margin-top: 8px;
+  margin-left: 10px;
+  max-height: calc(100vh - 390px);
+  overflow: auto;
+}
+
+.antd-table-body {
+  &::-webkit-scrollbar {
+    width: 4px !important;
+    height: 3px !important;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #888 !important;
+  }
+}
+
+.col-list-tree {
+  font-size: 15px;
+  margin-left: 10px;
+  margin-right: -10px;
+}
+.col-list-tree-width-full {
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  font-size: 15px;
+}
+
+.ant-tree {
+  width: 100% !important;
+}
+
+.ant-tree-treenode {
+  width: 100% !important;
+}
+
+.ant-tree-node-content-wrapper {
+  flex: 1 !important;
+}

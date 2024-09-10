@@ -1,0 +1,41 @@
+.default_btn_add {
+  background-color: $btn-main-color;
+  border-color: $btn-main-color !important;
+  color: $white-color;
+  &:hover {
+    background-color: $btn-main-color-hover !important;
+    border-color: $btn-main-color-hover !important;
+    color: $white-color !important;
+  }
+
+  &:focus {
+    background-color: $btn-main-color-focus !important;
+    border-color: $btn-main-color-focus !important;
+  }
+}
+
+.default_btn_search {
+  background-color: $primary-color;
+  border-color: $primary-color !important;
+  color: $white-color;
+  &:hover {
+    background-color: $primary-color-hover !important;
+    border-color: $primary-color-hover !important;
+    color: $white-color !important;
+  }
+
+  &:focus {
+    background-color: $primary-color-focus !important;
+    border-color: $primary-color-focus !important;
+  }
+}
+
+.default_btn_refresh {
+  border: 1px solid $primary-color !important;
+  color: $primary-color;
+  &:hover {
+    background-color: $primary-color-hover !important;
+    border-color: $primary-color-hover !important;
+    color: $white-color !important;
+  }
+}

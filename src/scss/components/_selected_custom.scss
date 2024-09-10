@@ -1,0 +1,52 @@
+.appSelected_main {
+
+  .title_selected_main {
+    span {
+      color: $danger-color;
+    }
+  }
+  .ant-select,
+  .ant-select-outlined {
+
+  }
+
+  .ant-select:focus,
+  .ant-select-outlined:focus,
+  .ant-select:hover,
+  .ant-select-outlined:hover,
+  .ant-select-outlined-focused,
+  .ant-select-focused {
+    border-color: $btn-main-color !important;
+    border-radius: 6px;
+    box-shadow: 0 0 0 2px rgba(0, 105, 0, 0.2) !important;
+  }
+  .ant-select-affix-wrapper:hover {
+    border-radius: 6px;
+    border-color: $btn-main-color !important;
+  }
+
+  .ant-select[aria-invalid="true"] .ant-select-selector {
+      border-color: $danger-color !important;
+      box-shadow: none !important;
+    }
+  .ant-select-selector {
+    border-color: $btn-main-color !important;
+    background-color: white !important; // Ensures background remains white
+    color: $black-color !important; // Ensures text color remains black
+  }
+
+  .ant-select-disabled .ant-select-selector {
+    background-color: white !important; // Override disabled background color
+    color: $black-color !important; // Override disabled text color
+    opacity: 1 !important; // Ensure full opacity
+  }
+
+  }
+  .selected_main {
+    width: 100%;
+  }
+
+  .text_error {
+    color: $danger-color;
+    margin-top: 5px;
+  }

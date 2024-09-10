@@ -1,0 +1,47 @@
+.apptable_container {
+  display: flex;
+  flex-direction: column;
+  .apptable_container_header {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .apptable_container_header_title {
+      h3 {
+        font-weight: 700;
+        font-size: 17px;
+        color: $text-main-color;
+      }
+      span {
+        font-weight: 700;
+        color: $text-main-color;
+      }
+    }
+  }
+  .empty_table {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+  }
+  .ant-table-cell {
+    //text-align: center !important;
+  }
+   .ant-table-cell-with-append {
+    display: flex !important;
+    //text-align: center !important;
+  }
+}
+.border-class{
+  margin: 20px 0px;
+  border-top: 0.7px solid $black-color;
+  gap: 20px;
+}
+
+.ant-collapse-header-text{
+  font-weight: 700;
+  font-size: 17px;
+  color: $text-main-color !important;
+}
