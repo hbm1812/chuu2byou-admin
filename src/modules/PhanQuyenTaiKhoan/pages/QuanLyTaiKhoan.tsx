@@ -30,7 +30,7 @@ const initSearchParams = {
 
 const QuanLyTaiKhoan: React.FC = () => {
   const { state } = useLocation();
-  const auth = state.authority;
+  // const auth = state.authority;
   const dispatch = useDispatch();
   const [formSearch] = Form.useForm<ISearchQlTaiKhoan>();
   const [refresh, refecth] = useRefresh();
@@ -54,7 +54,7 @@ const QuanLyTaiKhoan: React.FC = () => {
   const extraButton = () => {
     return (
       <div>
-        {auth === "OPS" ? (
+     
           <div className="page_container_header_extra">
             <AppButton
               className="default_btn_add"
@@ -62,9 +62,7 @@ const QuanLyTaiKhoan: React.FC = () => {
               onClick={showModalAdd}
             />
           </div>
-        ) : (
-          <></>
-        )}
+       
       </div>
     );
   };
@@ -170,7 +168,7 @@ const QuanLyTaiKhoan: React.FC = () => {
               }}
             />
           </Tooltip>
-          {auth === "OPS" && (
+        
             <Tooltip title="Chỉnh sửa tài khoản">
               <EditOutlined
                 className="icon_action_table edit"
@@ -180,8 +178,8 @@ const QuanLyTaiKhoan: React.FC = () => {
                 }}
               />
             </Tooltip>
-          )}
-          {auth === "OPS" && (
+     
+     
             <Tooltip title="Xóa tài khoản">
               <Popconfirm
                 title="Bạn có chắc chắn muốn xóa?"
@@ -198,7 +196,7 @@ const QuanLyTaiKhoan: React.FC = () => {
                 />
               </Popconfirm>
             </Tooltip>
-          )}
+    
         </Space>
       ),
     },

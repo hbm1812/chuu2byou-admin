@@ -3,6 +3,7 @@ import DashboardRoutes from "../modules/Dashboard/quanLyDanhMuc.route";
 import PhanQuyenTaiKhoanRoutes from "../modules/PhanQuyenTaiKhoan/phanQuyenTaiKhoan.route";
 import CoreRoutes from "../modules/Core/core.routes";
 import NewsRoutes from "../modules/News/news.route";
+import CategoryRoutes from "../modules/Category/category.route";
 
 
 export interface IAuthoriryRoute {
@@ -34,6 +35,7 @@ export const routes_url: IRoute[] = [
   ...DashboardRoutes,
   ...PhanQuyenTaiKhoanRoutes,
   ...NewsRoutes,
+  ...CategoryRoutes,
   ...CoreRoutes,
 ];
 

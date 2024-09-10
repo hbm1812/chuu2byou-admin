@@ -1,0 +1,192 @@
+.btn_search_qldm {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.search_form_container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+
+  .ant-form-item {
+    margin-bottom: 0px !important;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.search_form_container_spec {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+
+  .ant-form-item {
+    margin-bottom: 0px !important;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form_container_3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+
+  .ant-form-item {
+    margin-bottom: 0px !important;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form_container_3_2 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+
+  .ant-form-item {
+    margin-bottom: 0px !important;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form_container_1_2_3 {
+  display: grid;
+  grid-template-columns: 1.47fr 3fr;
+  gap: 16px;
+  margin-bottom: 20px;
+
+  .ant-form-item {
+    margin-bottom: 0px !important;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form_container_2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 10px;
+
+  .ant-form-item {
+    margin-bottom: 0px !important;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form_container_8 {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 16px;
+  margin-bottom: 10px;
+
+  .ant-form-item {
+    margin-bottom: 0px !important;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form_container_row1_row2 {
+  display: flex;
+  gap: 8px; // Khoảng cách giữa các trường input
+
+  .ant-form-item {
+    flex: 1;
+    margin-bottom: 0px !important;
+
+    // Tạo chiều rộng cho các trường input
+    .ant-input {
+      width: 100%;
+    }
+
+    // Căn chỉnh label
+    .ant-form-item-label {
+      line-height: 1.5;
+
+      label {
+        font-weight: normal;
+        white-space: nowrap;
+      }
+    }
+
+    .ant-form-item-control {
+      .ant-form-item-control-input-content {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+}
+
+.form_container_row1_row2_2 {
+  display: flex;
+}
+
+.form_container_row1_row2_2 .form_item_percent {
+  flex: 0 0 80px;
+}
+
+.chHeSoDiaBan_container {
+  display: flex;
+  flex-direction: row;
+
+  .searchPanel {
+    padding: 10px;
+    width: 19%;
+    border-right: 2px solid $primary-color;
+
+    .ant-tree-node-selected {
+      background-color: $background-color-sider-menuItem-hover !important;
+    }
+  }
+
+  .tablePanel {
+    width: 81%;
+    padding: 0px 10px;
+  }
+}
+
+
+.icon_action_table {
+  cursor: pointer;
+  font-size: 18px;
+  
+}
+
+.detail {
+  color: rgb(24, 106, 201);
+}
+
+.edit {
+  color: rgb(24, 106, 201);
+  margin-left: 15px;
+}
+
+
+.delete {
+  color: red;
+  margin-left: 15px;
+}

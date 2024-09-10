@@ -5,6 +5,6 @@ import react from '@vitejs/plugin-react-swc'
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: 3170, // Đổi port thành 3000 hoặc port mà bạn muốn
+    port: 3107, // Đổi port thành 3000 hoặc port mà bạn muốn
   },
 })

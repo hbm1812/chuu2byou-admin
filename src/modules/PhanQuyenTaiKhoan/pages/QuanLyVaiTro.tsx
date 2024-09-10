@@ -31,7 +31,7 @@ const initSearchParams = {
 
 const QuanLyVaiTro: React.FC = () => {
   const { state } = useLocation();
-  const auth = state.authority;
+  // const auth = state.authority;
   const dispatch = useDispatch();
 
   const [formSearch] = Form.useForm<ISearchQlVaiTro>();
@@ -97,7 +97,7 @@ const QuanLyVaiTro: React.FC = () => {
   const extraButton = () => {
     return (
       <div>
-        {auth === "OPS" ? (
+     
           <div className="page_container_header_extra">
             <AppButton
               className="default_btn_add"
@@ -105,9 +105,7 @@ const QuanLyVaiTro: React.FC = () => {
               onClick={showModalAdd}
             />
           </div>
-        ) : (
-          <></>
-        )}
+      
       </div>
     );
   };
@@ -195,7 +193,7 @@ const QuanLyVaiTro: React.FC = () => {
             style={{ fontSize: 18, cursor: "pointer" }}
             onClick={() => showModalDetail(record.code)}
           />
-          {auth === "OPS" && (
+        
             <EditOutlined
               style={{
                 color: "rgb(24, 106, 201)",
@@ -205,8 +203,7 @@ const QuanLyVaiTro: React.FC = () => {
               }}
               onClick={() => showModalUpdate(record.code)}
             />
-          )}
-          {auth === "OPS" && (
+
             <Popconfirm
               title="Bạn có chắc chắn muốn xóa?"
               onConfirm={() => deleteProduct(record.code)}
@@ -222,7 +219,7 @@ const QuanLyVaiTro: React.FC = () => {
                 }}
               />
             </Popconfirm>
-          )}
+ 
         </Space>
       ),
     },
