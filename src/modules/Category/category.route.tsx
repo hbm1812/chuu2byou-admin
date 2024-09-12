@@ -4,6 +4,7 @@ import { IRoute } from "../../routes/routes";
 import {lazy} from "react";
 
 const News  = lazy(() => import("./pages/News"));
+const NewsType  = lazy(() => import("./pages/NewsType"));
 
 export const CategoryRoutes: IRoute[] = [
   {
@@ -17,6 +18,13 @@ export const CategoryRoutes: IRoute[] = [
         path: "/news",
         label: "news",
         element: <News />,
+        icon: <FaCertificate />,
+      },
+      {
+        key: "NewsType",
+        path: "/news-type",
+        label: "News type",
+        element: <NewsType />,
         icon: <FaCertificate />,
       },
      

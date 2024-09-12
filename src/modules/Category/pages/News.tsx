@@ -3,9 +3,9 @@ import AppButton from '../../../components/common/AppButton';
 import { useLocation } from 'react-router-dom';
 import PageContainer from '../../../components/common/PageContainer';
 import { useDispatch } from 'react-redux';
-import SearchNews from '../components/search/NewsModal';
+import SearchNews from '../components/search/NewsSearch';
 import { Form, Popconfirm, Tooltip } from 'antd';
-import { ISearchNews, ITableNews } from '../interfaces/TypeNews';
+import { ISearchNews, ITable } from '../interfaces/TypeNews';
 import useRefresh from '../../../hooks/useRefresh';
 import AppTable from '../../../components/common/AppTable';
 import { ColumnsType } from 'antd/es/table';
@@ -22,6 +22,7 @@ const News: React.FC = () => {
   const [form] = Form.useForm<ISearchNews>();
 
   const [refresh, refecth] = useRefresh();
+
   const [searchParams, setSearchParams] = useState<ISearchNews>({
     page: 0,
     size: 10,
@@ -49,12 +50,11 @@ const News: React.FC = () => {
       total: 0,
     }
     );
-console.log(searchParams,"searchParams")
     refecth();
   };
   // const [dataTable, setDataTable] = useState<ITableNews[] | []>([]);
 
-  const columnTable: ColumnsType<ITableNews> = [
+  const columnTable: ColumnsType<ITable> = [
     { title: "index", dataIndex: "index", key: "index", },
     {
       title: "title",
@@ -91,8 +91,8 @@ console.log(searchParams,"searchParams")
             <Popconfirm
               title="削除してもよろしいですか?"
               // onConfirm={() => deleteProduct(record.id)}
-              okText="Có"
-              cancelText="Không"
+              okText="はい"
+              cancelText="いいえ"
             >
               <DeleteOutlined
                 className="icon_action_table delete"
@@ -107,7 +107,7 @@ console.log(searchParams,"searchParams")
     },
   ];
 
-  const dataTable: ITableNews[] = [
+  const dataTable: ITable[] = [
     {
       
       index: "1",
@@ -198,7 +198,7 @@ console.log(searchParams,"searchParams")
             />
           </div>
           <AppTable
-            titleTable="Danh sách hàng hóa"
+            titleTable="ニュースリスト"
             total={pagination.total}
             columns={columnTable as ColumnsType<any>}
             data={dataTable}

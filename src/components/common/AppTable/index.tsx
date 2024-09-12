@@ -39,7 +39,7 @@ const AppTable: React.FC<Props<any> & React.ComponentProps<typeof Table>> = ({
         {total && (
           <div className="apptable_container_header_title">
             <h4>
-              Có <span>{total}</span> kết quả
+              <span>{total}</span> 件のレコードがあります
             </h4>
           </div>
         )}
@@ -55,7 +55,7 @@ const AppTable: React.FC<Props<any> & React.ComponentProps<typeof Table>> = ({
           emptyText: (
             <div className="empty_table">
               <img src={emptyImage} alt="No data" style={{ margin: 20 }} />
-              <div>Không có dữ liệu</div>
+              <div>データなし</div>
             </div>
           ),
         }}

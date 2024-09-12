@@ -7,11 +7,18 @@ export interface ISearchNews {
     date?: string |number |null;
   }
 
-  export interface ITableNews {
-    #?: string | number | null;
+  export interface ITable {
+    index?: string | number | null;
     title?:string|number|null;
     thumbnail?:string|number|null;
     type_number?: string|number|null;
     date?: string|number|null;
     action?:string | number | null;
   }
+
+  export interface IResultNews {
+    data: ITable[];
+    // total: number;
+    // totalPage: number;
+  }
+  
