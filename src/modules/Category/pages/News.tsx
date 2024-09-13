@@ -1,15 +1,20 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AppButton from '../../../components/common/AppButton';
 import { useLocation } from 'react-router-dom';
 import PageContainer from '../../../components/common/PageContainer';
 import { useDispatch } from 'react-redux';
 import SearchNews from '../components/search/NewsSearch';
-import { Form, Popconfirm, Tooltip } from 'antd';
-import { ISearchNews, ITable } from '../interfaces/TypeNews';
+import { Form, message, Popconfirm, Tooltip } from 'antd';
+import { IInsertNews, INewsTable, ISearchNews } from '../interfaces/TypeNews';
 import useRefresh from '../../../hooks/useRefresh';
 import AppTable from '../../../components/common/AppTable';
 import { ColumnsType } from 'antd/es/table';
 import { DeleteOutlined, EditOutlined, EyeOutlined, EyeTwoTone } from '@ant-design/icons';
+import { startLoading, stopLoading } from '../../../redux/reducers/loadingReducer';
+import { addNews, deleteNews, detailNews, getListNews, updateNews } from '../api/news.api';
+import { showNotification } from '../../../redux/reducers/notificationReducer';
+import AppModal from '../../../components/common/AppModal';
+import ModalNews from '../components/modal/modalNews';
 
 type Props = {}
 
@@ -18,10 +23,57 @@ const News: React.FC = () => {
   // const auth = state.authority;
   const dispatch = useDispatch();
   const [modalType, setModalType] = useState("add");
-  let titleModal = ""
+  const [titleModal, setTitleModal] = useState(" ");
   const [form] = Form.useForm<ISearchNews>();
-
+  const [formModal] = Form.useForm<IInsertNews>();
   const [refresh, refecth] = useRefresh();
+  const [dataTable, setDataTable] = useState<INewsTable[] | []>([]);
+  const [news, setNews] = useState<INewsTable>();
+  const [newsCode, setNewsCode] = useState<string[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+
+  const showModalAdd = () => {
+    setIsModalOpen(true);
+    setModalType("add");
+    setTitleModal("新しいニュースを作成する");
+};
+
+  const showModalDetail = async (_id: any) => {
+    try {
+        dispatch(startLoading())
+        const rp = await detailNews(_id)
+        if (rp.status) {
+            setNews(rp.result);
+            setIsModalOpen(true);
+            setModalType("detail");
+            setTitleModal("ニュースの詳細");
+        }
+    } catch (e) {
+        console.error(e);
+    } finally {
+        dispatch(stopLoading())
+    }
+};
+
+const showModalEdit = async (_id: any) => {
+  try {
+      dispatch(startLoading())
+      const rp = await detailNews(_id)
+      if (rp.status) {
+          setNews(rp.result);
+          setIsModalOpen(true);
+          setModalType("edit");
+          setTitleModal("ニュースを編集する");
+      }
+  } catch (e) {
+      console.error(e);
+  } finally {
+      dispatch(stopLoading())
+  }
+};
+
+
 
   const [searchParams, setSearchParams] = useState<ISearchNews>({
     page: 0,
@@ -54,7 +106,7 @@ const News: React.FC = () => {
   };
   // const [dataTable, setDataTable] = useState<ITableNews[] | []>([]);
 
-  const columnTable: ColumnsType<ITable> = [
+  const columnTable: ColumnsType<INewsTable> = [
     { title: "index", dataIndex: "index", key: "index", },
     {
       title: "title",
@@ -66,9 +118,9 @@ const News: React.FC = () => {
     { title: "thumbnail", dataIndex: "thumbnail", key: "thumbnail", 
       render: (text: string) => <div style={{ width:70, height:50 }} ><img style={{ width:"200%", height:"100%" }} src={text} alt=""  /> </div>,
     },
-
-    { title: "type_number", dataIndex: "type_number", key: "type_number" },
-    { title: "date", dataIndex: "date", key: "date" },
+    { title: "newsCode", dataIndex: "newsCode", key: "newsCode" },
+    { title: "typeCode", dataIndex: "typeCode", key: "typeCode" },
+    { title: "upLoadDate", dataIndex: "upLoadDate", key: "upLoadDate" },
     {
       title: "action",
       dataIndex: "action",
@@ -78,19 +130,19 @@ const News: React.FC = () => {
           <Tooltip title="詳細を見る">
 
             <EyeOutlined className="icon_action_table detail"
-              // onClick={() => showModalChiTiet(record.id)} 
+              onClick={() => showModalDetail(record._id)}
               />
           </Tooltip>
           <Tooltip title="編集する">
             <EditOutlined
              className="icon_action_table edit"
-            // onClick={() => showModalSua(record.id)}
+            onClick={() => showModalEdit(record._id)}
             />
           </Tooltip>
           <Tooltip title="削除する">
             <Popconfirm
               title="削除してもよろしいですか?"
-              // onConfirm={() => deleteProduct(record.id)}
+              onConfirm={() => deleteVoid(record._id)}
               okText="はい"
               cancelText="いいえ"
             >
@@ -107,45 +159,125 @@ const News: React.FC = () => {
     },
   ];
 
-  const dataTable: ITable[] = [
-    {
-      
-      index: "1",
-      title: "日本の経済状況",
-      thumbnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3QkN5o0vBDAD_5iJjRfPRIHOVgXVbdQSnEw&s",
-      type_number: "101",
-      date: "2024-08-09",
-    },
-    {
-      index: "2",
-      title: "東京オリンピックの結果",
-      thumbnail: "https://example.com/thumbnail2.jpg",
-      type_number: "102",
-      date: "2024-08-10",
-    },
-    {
-      index: "3",
-      title: "新型ウイルスの影響",
-      thumbnail: "https://example.com/thumbnail3.jpg",
-      type_number: "103",
-      date: "2024-08-11",
-    },
-    {
-      index: "4",
-      title: "新しい技術の進展",
-      thumbnail: "https://example.com/thumbnail4.jpg",
-      type_number: "104",
-      date: "2024-08-12",
-    },
-    {
-      index: "5",
-      title: "芸能ニュース最新情報",
-      thumbnail: "https://example.com/thumbnail5.jpg",
-      type_number: "105",
-      date: "2024-08-13",
-    },
-  ];
+
+  const getList = async () => {
+    const payload = {
+        ...searchParams,
+    };
+    dispatch(startLoading());
+    try {
+        const response = await getListNews(payload);
+        if (response.status) {
+            console.log(response)
+            const updatedData: any = response.result.data.map(
+                (item: any, i: any) => ({
+                    ...item,
+                    index: i + 1 + (searchParams.page ?? 0) * (searchParams.size ?? 0),
+
+                })
+            );
+
+            setDataTable(updatedData);
+            setNewsCode(updatedData.map((item: INewsTable) => item.typeCode));
+            setPagination((prev) => ({
+                ...prev,
+                total: response.result.total,
+            }));
+
+        }
+    } catch (err) {
+        setDataTable([]);
+        dispatch(
+            showNotification({
+                message: "Lấy dữ liệu thất bại.",
+                type: "error",
+            })
+        );
+    } finally {
+        dispatch(stopLoading());
+    }
+};
+useEffect(() => {
+    getList();
+}, [searchParams, refresh]);
+
+
+
+const handleOk = async () => {
+  try {
+      dispatch(startLoading());
+      const values = await formModal.validateFields();
+
+      if (titleModal === "新しいニュースを作成する" && modalType === "add") {
+          const insertBody: IInsertNews = { ...values };
+          await addNews(insertBody).then((response) => {
+              if (response.status) {
+                  message.success("新規追加に成功しました!");
+                  refecth();
+                  handleCancel();
+              }
+          });
+      }
+
+      if (titleModal === "ニュースを編集する" && modalType === "edit") {
+
+          const updateBody: INewsTable = { ...values };
+          await updateNews(updateBody, news?._id).then((response) => {
+              if (response.status) {
+                  refecth();
+                  handleCancel();
+                  message.success("編集が完了しました!");
+              }
+          });
+
+      }
+  } catch (error: any) {
+
+      dispatch(
+          showNotification({
+              message: error?.message,
+              type: "error",
+          })
+      );
+  } finally {
+      dispatch(stopLoading());
+  }
+};
   
+
+const deleteVoid = async (_id: any) => {
+  try {
+      dispatch(startLoading());
+      await deleteNews(_id).then(response => {
+          if (response.status) {
+              dispatch(showNotification({ message: "削除に成功しました!", type: "success" }))
+              refecth();
+          } else {
+              // thông báo lỗi
+          }
+
+      });
+
+  } catch (error) {
+      dispatch(
+          showNotification({
+              message: "削除に失敗しました!",
+              type: "error",
+          })
+      );
+  } finally {
+      dispatch(stopLoading());
+  }
+
+};
+
+
+const handleCancel = () => {
+  setIsModalOpen(false);
+  formModal.resetFields();
+  setModalType("");
+  setTitleModal(" ");
+};
 
   const extraButton = () => {
     return (
@@ -154,7 +286,7 @@ const News: React.FC = () => {
         <AppButton className="default_btn_refresh" title="輸入" />
         <AppButton
           className="default_btn_add"
-          // onClick={showModalAdd}
+          onClick={showModalAdd}
           title="作成する"
         />
         <AppButton className="default_btn_refresh" title="輸出" />
@@ -163,13 +295,7 @@ const News: React.FC = () => {
       </div>
     );
   };
-  if (modalType === "add") {
-    titleModal = "Add News"
-  } else if (modalType === "edit") {
-    titleModal = "Edit News"
-  } else if (modalType === "detail") {
-    titleModal = "Detail News"
-  }
+
 
   const deleteDataSearch = () => {
     form.resetFields();
@@ -212,16 +338,17 @@ const News: React.FC = () => {
         </div>
 
 
-        {/* <AppModal width={"80%"} isOpen={isModalOpen} title={titleModal} onClose={handleCancel}
+        <AppModal width={"80%"} isOpen={isModalOpen} title={titleModal} onClose={handleCancel}
           onSubmit={() => formModal.submit()} typeOpenModal={modalType}>
-          <ModalHangHoa
+          <ModalNews
             onSubmit={handleOk}
             title={titleModal}
             form={formModal}
-            product={product}
-            productCodes={productCodes}
+            news={news}
+            modalType={modalType}
+            newsCode={newsCode}
           />
-        </AppModal> */}
+        </AppModal>
       </PageContainer>
     </div>
   )

@@ -26,20 +26,20 @@ const ModalNewsType: React.FC<Props> = ({
     if (modalType === "add") {
       setIsDisable(false);
     }
-    // if (newsType && modalType === "edit") {
-    //   form.setFieldsValue(newsType);
-    //   setIsDisable(false);
-    // }
-    // if (newsType && modalType === "detail") {
-    //   form.setFieldsValue(newsType);
-    //   setIsDisable(true);
-    // }
+    if (newsType && modalType === "edit") {
+      form.setFieldsValue(newsType);
+      setIsDisable(false);
+    }
+    if (newsType && modalType === "detail") {
+      form.setFieldsValue(newsType);
+      setIsDisable(true);
+    }
   }, [newsType, modalType]);
 
 
   const validateProductCode = (_: any, value: string) => {
     if ((modalType === "edit" && value !== newsType?.typeCode && newsTypeCode.includes(value)) || (modalType === "add" && newsTypeCode.includes(value))) {
-      return Promise.reject(new Error("Mã nội bộ đã tồn tại!"));
+      return Promise.reject(new Error("コードは既に存在します。"));
     }
     return Promise.resolve();
   };
@@ -53,12 +53,12 @@ const ModalNewsType: React.FC<Props> = ({
         onFinish={(values) => onSubmit(values)}
         autoComplete="off"
       >
-        <div className="modal_form_container_3_row">
+        <div className="modal_form_container_2_row">
           <Form.Item label="コード" name="typeCode" rules={[
             { required: !isDisable, message: 'コードを入力してください' },
             {
               pattern: /^[a-zA-Z0-9-_.\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]+$/,
-              message: "文字、数字、ダッシュ、アンダースコア、ピリオド、日本語文字のみが使用できます",
+              message: "文字、数字、ダッシュ、アンダースコア、ピリオド、日本語文字のみが使用できます。",
             },
             {
               validator: validateProductCode
@@ -70,8 +70,8 @@ const ModalNewsType: React.FC<Props> = ({
           <Form.Item label="ニュースタイプ" name="typeNameJP" rules={[
             { required: !isDisable, message: 'ニュースタイプを入力してください' },
             {
-              pattern: /^[a-zA-Z0-9-_.\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]+$/,
-              message: "文字、数字、ダッシュ、アンダースコア、ピリオド、日本語文字のみが使用できます",
+              pattern: /^[a-zA-Z0-9-_.\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\s]+$/,
+              message: "文字、数字、ダッシュ、アンダースコア、ピリオド、日本語文字のみが使用できます。",
             },
           ]}>
             <AppInput disableWithPopup={isDisable} />

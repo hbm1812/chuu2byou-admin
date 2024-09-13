@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import AppButton from '../../../components/common/AppButton';
 import { useLocation } from 'react-router-dom';
 import { startLoading, stopLoading } from '../../../redux/reducers/loadingReducer';
-import { IAddNewsType, ISearchNewsType, ITable } from '../interfaces/TypeNewsType';
+import { IAddNewsType, ISearchNewsType, ITable, IUpdateNewsType } from '../interfaces/TypeNewsType';
 import { useDispatch } from 'react-redux';
 import { Form, message, Popconfirm, Tooltip } from 'antd';
 import PageContainer from '../../../components/common/PageContainer';
@@ -14,7 +14,7 @@ import AppTable from '../../../components/common/AppTable';
 import AppModal from '../../../components/common/AppModal';
 import ModalNewsType from '../components/modal/modalNewsType';
 import { showNotification } from '../../../redux/reducers/notificationReducer';
-import { addNewsType, getListNewsType } from '../api/news.api';
+import { addNewsType, deleteNewsType, detailNewsType, getListNewsType, updateNewsType } from '../api/news.api';
 
 
 type Props = {}
@@ -37,8 +37,44 @@ const NewsType: React.FC = () => {
     const showModalAdd = () => {
         setIsModalOpen(true);
         setModalType("add");
-       setTitleModal("新しいタイプのニュースを作成する");
+        setTitleModal("新しいタイプのニュースを作成する");
     };
+
+    const showModalDetail = async (_id: any) => {
+        try {
+            dispatch(startLoading())
+            const rp = await detailNewsType(_id)
+            if (rp.status) {
+                setNewsType(rp.result);
+                setIsModalOpen(true);
+                setModalType("detail");
+                setTitleModal("ニュースタイプの詳細");
+            }
+        } catch (e) {
+            console.error(e);
+        } finally {
+            dispatch(stopLoading())
+        }
+    };
+
+
+    const showModalEdit = async (_id: any) => {
+        try {
+            dispatch(startLoading())
+            const rp = await detailNewsType(_id)
+            if (rp.status) {
+                setNewsType(rp.result);
+                setIsModalOpen(true);
+                setModalType("edit");
+                setTitleModal("ニュースの種類を編集する");
+            }
+        } catch (e) {
+            console.error(e);
+        } finally {
+            dispatch(stopLoading())
+        }
+    };
+
 
     const [searchParams, setSearchParams] = useState<ISearchNewsType>({
         page: 0,
@@ -49,7 +85,7 @@ const NewsType: React.FC = () => {
         pageSize: 10,
         total: 0,
     });
-    
+
 
     const onSearch = async (values: ISearchNewsType) => {
         setSearchParams({
@@ -67,7 +103,7 @@ const NewsType: React.FC = () => {
         );
         refecth();
     };
-   
+
     const deleteDataSearch = () => {
         form.resetFields();
         form.submit();
@@ -97,19 +133,19 @@ const NewsType: React.FC = () => {
                     <Tooltip title="詳細を見る">
 
                         <EyeOutlined className="icon_action_table detail"
-                        // onClick={() => showModalChiTiet(record.id)} 
+                            onClick={() => showModalDetail(record._id)}
                         />
                     </Tooltip>
                     <Tooltip title="編集する">
                         <EditOutlined
                             className="icon_action_table edit"
-                        // onClick={() => showModalSua(record.id)}
+                            onClick={() => showModalEdit(record._id)}
                         />
                     </Tooltip>
                     <Tooltip title="削除する">
                         <Popconfirm
                             title="削除してもよろしいですか?"
-                            // onConfirm={() => deleteProduct(record.id)}
+                            onConfirm={() => deleteVoid(record._id)}
                             okText="はい"
                             cancelText="いいえ"
                         >
@@ -125,9 +161,9 @@ const NewsType: React.FC = () => {
             fixed: 'right',
         },
     ];
-   
+
     const getList = async () => {
-        
+
         const payload = {
             ...searchParams,
         };
@@ -143,14 +179,14 @@ const NewsType: React.FC = () => {
 
                     })
                 );
-                
+
                 setDataTable(updatedData);
                 setNewsTypeCode(updatedData.map((item: ITable) => item.typeCode));
                 setPagination((prev) => ({
                     ...prev,
                     total: response.result.total,
                 }));
-                
+
             }
         } catch (err) {
             setDataTable([]);
@@ -166,7 +202,7 @@ const NewsType: React.FC = () => {
     };
     useEffect(() => {
         getList();
-    }, [ searchParams,refresh]);
+    }, [searchParams, refresh]);
 
     const handleTableChange = (pagination: any) => {
         setSearchParams({
@@ -176,50 +212,35 @@ const NewsType: React.FC = () => {
         });
         setPagination(pagination);
     };
-    
-    const showModalEdit = async (id: number) => {
-        try {
-            dispatch(startLoading())
-            // const rp = await detailProduct(id)
-            // if (rp.status) {
-            //     setProduct(rp.result);
-            //     setIsModalOpen(true);
-            //     setModalType("edit");
-            // }
-            setIsModalOpen(true);
-            setModalType("edit");
-        } catch (e) {
-            console.error(e);
-        } finally {
-            dispatch(stopLoading())
-        }
-    };
 
-     const handleOk = async () => {
+    
+
+    const handleOk = async () => {
         try {
             dispatch(startLoading());
             const values = await formModal.validateFields();
-            if (titleModal === "新しいタイプのニュースを作成する" && modalType==="add") {
+
+            if (titleModal === "新しいタイプのニュースを作成する" && modalType === "add") {
                 const insertBody: IAddNewsType = { ...values };
                 await addNewsType(insertBody).then((response) => {
                     if (response.status) {
-                        message.success("Thêm mới thành công!");
+                        message.success("新規追加に成功しました!");
                         refecth();
                         handleCancel();
                     }
                 });
             }
 
-            if (titleModal === "Sửa hàng hóa") {
+            if (titleModal === "ニュースの種類を編集する" && modalType === "edit") {
 
-                // const updateBody: IUpdateDanhMucHangHoa = { ...values };
-                // await updateDMHangHoa(updateBody, product?.id).then((response) => {
-                //     if (response.status) {
-                //         refecth();
-                //         handleCancel();
-                //         message.success("Sửa thành công!");
-                //     }
-                // });
+                const updateBody: IUpdateNewsType = { ...values };
+                await updateNewsType(updateBody, newsType?._id).then((response) => {
+                    if (response.status) {
+                        refecth();
+                        handleCancel();
+                        message.success("編集が完了しました!");
+                    }
+                });
 
             }
         } catch (error: any) {
@@ -233,7 +254,33 @@ const NewsType: React.FC = () => {
         } finally {
             dispatch(stopLoading());
         }
-    }; 
+    };
+
+    const deleteVoid = async (_id: any) => {
+        try {
+            dispatch(startLoading());
+            await deleteNewsType(_id).then(response => {
+                if (response.status) {
+                    dispatch(showNotification({ message: "削除に成功しました!", type: "success" }))
+                    refecth();
+                } else {
+                    // thông báo lỗi
+                }
+
+            });
+
+        } catch (error) {
+            dispatch(
+                showNotification({
+                    message: "削除に失敗しました!",
+                    type: "error",
+                })
+            );
+        } finally {
+            dispatch(stopLoading());
+        }
+
+    };
 
     const handleCancel = () => {
         setIsModalOpen(false);
@@ -241,6 +288,10 @@ const NewsType: React.FC = () => {
         setModalType("");
         setTitleModal(" ");
     };
+
+
+
+
     const extraButton = () => {
         return (
             <div className="page_container_header_extra">
@@ -290,12 +341,12 @@ const NewsType: React.FC = () => {
                             pageSize: pagination.pageSize,
                             total: pagination.total,
                         }}
-                    onChange={handleTableChange}
+                        onChange={handleTableChange}
                     />
                 </div>
 
 
-                <AppModal width={"70%"} isOpen={isModalOpen} title={titleModal} onClose={handleCancel}
+                <AppModal width={"80%"} isOpen={isModalOpen} title={titleModal} onClose={handleCancel}
                     onSubmit={() => formModal.submit()} typeOpenModal={modalType}>
                     <ModalNewsType
                         onSubmit={handleOk}

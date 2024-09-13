@@ -7,18 +7,36 @@ export interface ISearchNews {
     date?: string |number |null;
   }
 
-  export interface ITable {
-    index?: string | number | null;
+  export interface IInsertNews {
+    newsCode?: string | number | null;
     title?:string|number|null;
     thumbnail?:string|number|null;
-    type_number?: string|number|null;
-    date?: string|number|null;
-    action?:string | number | null;
+    typeCode?: string|number|null;
+    upLoadDate?: string|number|null;
+    content?: string|number|null;
+    image?:string|number|null;
+    relatedInformation?:string|number|null;
   }
 
+
+  export interface INewsTable {
+    index?:string;
+    newsCode?: string | number | null;
+    title?:string|number|null;
+    thumbnail?:string|number|null;
+    typeCode?: string|number|null;
+    upLoadDate?: string|number|null;
+    content?: string|number|null;
+    image?:string|number|null;
+    relatedInformation?:string|number|null;
+    _id?: string | number | null;
+    action?:string;
+  }
+
+
   export interface IResultNews {
-    data: ITable[];
-    // total: number;
-    // totalPage: number;
+    data: INewsTable[];
+    total: number;
+    totalPage: number;
   }
   

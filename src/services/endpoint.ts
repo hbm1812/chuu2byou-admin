@@ -35,8 +35,17 @@ export const endpoints = {
     newsType: {
       getList: `newsType/get-all`,
       add: `newsType/add`,
-      
-    }
+      detail:`newsType/detail`,
+      update:`newsType/update`,
+      delete:`newsType/delete`, 
+    },
+    news: {
+      getList: `news/get-all`,
+      add: `news/add`,
+      detail:`news/detail`,
+      update:`news/update`,
+      delete:`news/delete`, 
+    },
   },
 
   main: {

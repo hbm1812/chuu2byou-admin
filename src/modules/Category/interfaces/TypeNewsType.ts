@@ -18,8 +18,14 @@ export interface IAddNewsType {
     typeCode?:string|number|null;
     typeNameJP?:string|number|null;
     action?: string|number|null;
+    _id?: string | number | null;
   }
 
+  export interface IUpdateNewsType {
+    _id?: string | number | null;
+    typeNameJP?:string|number|null;
+    typeCode?:string|number|null;
+  }
 
   export interface IResultNewsType {
     data: ITable[];
