@@ -32,6 +32,9 @@ export const endpoints = {
     },
   },
   category: {
+    upload:{
+      upload:`upload/image`,
+    },
     newsType: {
       getList: `newsType/get-all`,
       add: `newsType/add`,
@@ -46,6 +49,14 @@ export const endpoints = {
       update:`news/update`,
       delete:`news/delete`, 
     },
+    tv:{
+      getList: `tv/get-all`,
+      add: `tv/add`,
+      detail:`tv/detail`,
+      update:`tv/update`,
+      delete:`tv/delete`, 
+    }
+    
   },
 
   main: {

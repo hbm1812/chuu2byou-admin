@@ -91,6 +91,7 @@ const NewsType: React.FC = () => {
         setSearchParams({
             ...searchParams,
             typeNameJP: values.typeNameJP && values.typeNameJP !== "" ? values.typeNameJP : undefined,
+            typeCode: values.typeCode && values.typeCode !== "" ? values.typeCode : undefined,
             page: 0,
             size: 10,
 

@@ -74,3 +74,5 @@ export const deleteNews = (id?: any) => {
         `${API_CATEGORY}/${endpoints.category.news.delete}/${id}`
     );
 };
+
+

@@ -33,45 +33,48 @@ const News: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
 
+  const [newsType, setNewsType] = useState<{ id: string; name: string } | null>(null);
+
+
   const showModalAdd = () => {
     setIsModalOpen(true);
     setModalType("add");
     setTitleModal("新しいニュースを作成する");
-};
+  };
 
   const showModalDetail = async (_id: any) => {
     try {
-        dispatch(startLoading())
-        const rp = await detailNews(_id)
-        if (rp.status) {
-            setNews(rp.result);
-            setIsModalOpen(true);
-            setModalType("detail");
-            setTitleModal("ニュースの詳細");
-        }
-    } catch (e) {
-        console.error(e);
-    } finally {
-        dispatch(stopLoading())
-    }
-};
-
-const showModalEdit = async (_id: any) => {
-  try {
       dispatch(startLoading())
       const rp = await detailNews(_id)
       if (rp.status) {
-          setNews(rp.result);
-          setIsModalOpen(true);
-          setModalType("edit");
-          setTitleModal("ニュースを編集する");
+        setNews(rp.result);
+        setIsModalOpen(true);
+        setModalType("detail");
+        setTitleModal("ニュースの詳細");
       }
-  } catch (e) {
+    } catch (e) {
       console.error(e);
-  } finally {
+    } finally {
       dispatch(stopLoading())
-  }
-};
+    }
+  };
+
+  const showModalEdit = async (_id: any) => {
+    try {
+      dispatch(startLoading())
+      const rp = await detailNews(_id)
+      if (rp.status) {
+        setNews(rp.result);
+        setIsModalOpen(true);
+        setModalType("edit");
+        setTitleModal("ニュースを編集する");
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      dispatch(stopLoading())
+    }
+  };
 
 
 
@@ -115,8 +118,9 @@ const showModalEdit = async (_id: any) => {
       render: (text: string) => <div style={{ textAlign: 'left' }}>{text}</div>,
 
     },
-    { title: "thumbnail", dataIndex: "thumbnail", key: "thumbnail", 
-      render: (text: string) => <div style={{ width:70, height:50 }} ><img style={{ width:"200%", height:"100%" }} src={text} alt=""  /> </div>,
+    {
+      title: "thumbnail", dataIndex: "thumbnail", key: "thumbnail",
+      render: (text: string) => <div style={{ width: 70, height: 50 }} ><img style={{ width: "200%", height: "100%" }} src={text} alt="" /> </div>,
     },
     { title: "newsCode", dataIndex: "newsCode", key: "newsCode" },
     { title: "typeCode", dataIndex: "typeCode", key: "typeCode" },
@@ -131,12 +135,12 @@ const showModalEdit = async (_id: any) => {
 
             <EyeOutlined className="icon_action_table detail"
               onClick={() => showModalDetail(record._id)}
-              />
+            />
           </Tooltip>
           <Tooltip title="編集する">
             <EditOutlined
-             className="icon_action_table edit"
-            onClick={() => showModalEdit(record._id)}
+              className="icon_action_table edit"
+              onClick={() => showModalEdit(record._id)}
             />
           </Tooltip>
           <Tooltip title="削除する">
@@ -162,122 +166,122 @@ const showModalEdit = async (_id: any) => {
 
   const getList = async () => {
     const payload = {
-        ...searchParams,
+      ...searchParams,
     };
     dispatch(startLoading());
     try {
-        const response = await getListNews(payload);
-        if (response.status) {
-            console.log(response)
-            const updatedData: any = response.result.data.map(
-                (item: any, i: any) => ({
-                    ...item,
-                    index: i + 1 + (searchParams.page ?? 0) * (searchParams.size ?? 0),
+      const response = await getListNews(payload);
+      if (response.status) {
+        console.log(response)
+        const updatedData: any = response.result.data.map(
+          (item: any, i: any) => ({
+            ...item,
+            index: i + 1 + (searchParams.page ?? 0) * (searchParams.size ?? 0),
 
-                })
-            );
-
-            setDataTable(updatedData);
-            setNewsCode(updatedData.map((item: INewsTable) => item.typeCode));
-            setPagination((prev) => ({
-                ...prev,
-                total: response.result.total,
-            }));
-
-        }
-    } catch (err) {
-        setDataTable([]);
-        dispatch(
-            showNotification({
-                message: "Lấy dữ liệu thất bại.",
-                type: "error",
-            })
+          })
         );
+
+        setDataTable(updatedData);
+        setNewsCode(updatedData.map((item: INewsTable) => item.typeCode));
+        setPagination((prev) => ({
+          ...prev,
+          total: response.result.total,
+        }));
+
+      }
+    } catch (err) {
+      setDataTable([]);
+      dispatch(
+        showNotification({
+          message: "Lấy dữ liệu thất bại.",
+          type: "error",
+        })
+      );
     } finally {
-        dispatch(stopLoading());
+      dispatch(stopLoading());
     }
-};
-useEffect(() => {
+  };
+  useEffect(() => {
     getList();
-}, [searchParams, refresh]);
+  }, [searchParams, refresh]);
 
 
 
-const handleOk = async () => {
-  try {
+  const handleOk = async () => {
+    try {
       dispatch(startLoading());
       const values = await formModal.validateFields();
 
       if (titleModal === "新しいニュースを作成する" && modalType === "add") {
-          const insertBody: IInsertNews = { ...values };
-          await addNews(insertBody).then((response) => {
-              if (response.status) {
-                  message.success("新規追加に成功しました!");
-                  refecth();
-                  handleCancel();
-              }
-          });
+        const insertBody: IInsertNews = { ...values };
+        await addNews(insertBody).then((response) => {
+          if (response.status) {
+            message.success("新規追加に成功しました!");
+            refecth();
+            handleCancel();
+          }
+        });
       }
 
       if (titleModal === "ニュースを編集する" && modalType === "edit") {
 
-          const updateBody: INewsTable = { ...values };
-          await updateNews(updateBody, news?._id).then((response) => {
-              if (response.status) {
-                  refecth();
-                  handleCancel();
-                  message.success("編集が完了しました!");
-              }
-          });
+        const updateBody: INewsTable = { ...values };
+        await updateNews(updateBody, news?._id).then((response) => {
+          if (response.status) {
+            refecth();
+            handleCancel();
+            message.success("編集が完了しました!");
+          }
+        });
 
       }
-  } catch (error: any) {
+    } catch (error: any) {
 
       dispatch(
-          showNotification({
-              message: error?.message,
-              type: "error",
-          })
+        showNotification({
+          message: error?.message,
+          type: "error",
+        })
       );
-  } finally {
+    } finally {
       dispatch(stopLoading());
-  }
-};
-  
+    }
+  };
 
-const deleteVoid = async (_id: any) => {
-  try {
+
+  const deleteVoid = async (_id: any) => {
+    try {
       dispatch(startLoading());
       await deleteNews(_id).then(response => {
-          if (response.status) {
-              dispatch(showNotification({ message: "削除に成功しました!", type: "success" }))
-              refecth();
-          } else {
-              // thông báo lỗi
-          }
+        if (response.status) {
+          dispatch(showNotification({ message: "削除に成功しました!", type: "success" }))
+          refecth();
+        } else {
+          // thông báo lỗi
+        }
 
       });
 
-  } catch (error) {
+    } catch (error) {
       dispatch(
-          showNotification({
-              message: "削除に失敗しました!",
-              type: "error",
-          })
+        showNotification({
+          message: "削除に失敗しました!",
+          type: "error",
+        })
       );
-  } finally {
+    } finally {
       dispatch(stopLoading());
-  }
+    }
 
-};
+  };
 
 
-const handleCancel = () => {
-  setIsModalOpen(false);
-  formModal.resetFields();
-  setModalType("");
-  setTitleModal(" ");
-};
+  const handleCancel = () => {
+    setIsModalOpen(false);
+    formModal.resetFields();
+    setModalType("");
+    setTitleModal(" ");
+  };
 
   const extraButton = () => {
     return (
@@ -333,7 +337,7 @@ const handleCancel = () => {
               pageSize: pagination.pageSize,
               total: pagination.total,
             }}
-            // onChange={handleTableChange}
+          // onChange={handleTableChange}
           />
         </div>
 
@@ -347,6 +351,8 @@ const handleCancel = () => {
             news={news}
             modalType={modalType}
             newsCode={newsCode}
+            newsType={newsType}
+            setNewsType={setNewsType}
           />
         </AppModal>
       </PageContainer>
