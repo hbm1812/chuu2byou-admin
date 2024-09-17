@@ -1,7 +1,8 @@
 import { API_CATEGORY, endpoints } from "../../../services/endpoint";
 import { request } from "../../../services/request";
+import { IResultTV, ISearchTV, ITableTV, IUpdateTV } from "../interfaces/TypeTV";
 
-export const getListNewsType= (body: ISearchTV) => {
+export const getListTV= (body: ISearchTV) => {
     return request<IResultTV>(
         "post",
         `${API_CATEGORY}/${endpoints.category.tv.getList}`, body

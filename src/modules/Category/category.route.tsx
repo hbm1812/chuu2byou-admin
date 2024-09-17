@@ -5,6 +5,7 @@ import {lazy} from "react";
 
 const News  = lazy(() => import("./pages/News"));
 const NewsType  = lazy(() => import("./pages/NewsType"));
+const TV  = lazy(() => import("./pages/TV"));
 
 export const CategoryRoutes: IRoute[] = [
   {
@@ -25,6 +26,13 @@ export const CategoryRoutes: IRoute[] = [
         path: "/news-type",
         label: "News type",
         element: <NewsType />,
+        icon: <FaCertificate />,
+      },
+      {
+        key: "TVBroadcast",
+        path: "/tv-broadcast",
+        label: "Tv broadcast",
+        element: <TV />,
         icon: <FaCertificate />,
       },
      

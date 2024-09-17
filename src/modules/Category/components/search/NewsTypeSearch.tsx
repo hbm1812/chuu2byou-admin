@@ -5,7 +5,6 @@ import { ISearchNewsType } from '../../interfaces/TypeNewsType';
 
 type Props = {
     form: FormInstance<ISearchNewsType>;
-
     onSearch: (values: ISearchNewsType) => Promise<void>;
 }
 
