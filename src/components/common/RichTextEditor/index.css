@@ -1,0 +1,24 @@
+/* Đảm bảo rằng phần tử chứa ReactQuill có chiều cao cố định và cuộn nội dung bên trong */
+.react-quill-container {
+    height: 630px; /* Điều chỉnh chiều cao theo nhu cầu */
+    position: relative; /* Để có thể điều chỉnh vị trí của thanh công cụ */
+    overflow: hidden; /* Ẩn cuộn toàn bộ phần tử ngoài */
+  }
+  
+  /* Đặt thanh công cụ cố định ở trên cùng */
+  .react-quill-container .ql-toolbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1; /* Đặt thanh công cụ ở trên cùng */
+    background-color: white;
+  }
+  
+  /* Đảm bảo nội dung có thể cuộn */
+  .react-quill-container .ql-editor {
+    height: 100%;
+    overflow-y: auto; /* Cho phép cuộn dọc */
+    padding-top: 40px; /* Cung cấp không gian cho thanh công cụ */
+  }
+  

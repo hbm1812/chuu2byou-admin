@@ -14,7 +14,6 @@ export interface ISearchNews {
     typeCode?: string|number|null;
     upLoadDate?: string|number|null;
     content?: string|number|null;
-    image?:string|number|null;
     relatedInformation?:string|number|null;
   }
 
@@ -27,7 +26,6 @@ export interface ISearchNews {
     typeCode?: string|number|null;
     upLoadDate?: string|number|null;
     content?: string|number|null;
-    image?:string|number|null;
     relatedInformation?:string|number|null;
     _id?: string | number | null;
     action?:string;

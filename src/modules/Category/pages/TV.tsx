@@ -243,7 +243,6 @@ const TV = (props: Props) => {
           }
         try {
             dispatch(startLoading());
-
             if (titleModal === "新しいテレビ放送を作成する" && modalType === "add") {
                 await addTV(payload).then((response) => {
                     if (response.status) {
@@ -255,6 +254,7 @@ const TV = (props: Props) => {
             }
 
             if (titleModal === "テレビ放送を編集する" && modalType === "edit") {
+                console.log(payload,"payload")
                 await updateTV(payload, tv?._id).then((response) => {
                     if (response.status) {
                         refecth();

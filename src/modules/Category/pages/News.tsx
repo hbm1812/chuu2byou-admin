@@ -15,7 +15,14 @@ import { addNews, deleteNews, detailNews, getListNews, updateNews } from '../api
 import { showNotification } from '../../../redux/reducers/notificationReducer';
 import AppModal from '../../../components/common/AppModal';
 import ModalNews from '../components/modal/modalNews';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ja'; // Import locale Nhật Bản
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import weekday from 'dayjs/plugin/weekday';
 
+dayjs.extend(customParseFormat);
+dayjs.extend(weekday);
+dayjs.locale('ja'); // Đặt locale là Nhật Bản
 type Props = {}
 
 const News: React.FC = () => {
@@ -39,7 +46,7 @@ const News: React.FC = () => {
   const showModalAdd = () => {
     setIsModalOpen(true);
     setModalType("add");
-    setTitleModal("新しいニュースを作成する");
+    setTitleModal("Add new news");
   };
 
   const showModalDetail = async (_id: any) => {
@@ -50,7 +57,7 @@ const News: React.FC = () => {
         setNews(rp.result);
         setIsModalOpen(true);
         setModalType("detail");
-        setTitleModal("ニュースの詳細");
+        setTitleModal("Detail news");
       }
     } catch (e) {
       console.error(e);
@@ -67,7 +74,7 @@ const News: React.FC = () => {
         setNews(rp.result);
         setIsModalOpen(true);
         setModalType("edit");
-        setTitleModal("ニュースを編集する");
+        setTitleModal("Edit news");
       }
     } catch (e) {
       console.error(e);
@@ -131,24 +138,24 @@ const News: React.FC = () => {
       key: "action",
       render: (_, record: any) => (
         <div style={{ textAlign: "center" }}>
-          <Tooltip title="詳細を見る">
+          <Tooltip title="Detail">
 
             <EyeOutlined className="icon_action_table detail"
               onClick={() => showModalDetail(record._id)}
             />
           </Tooltip>
-          <Tooltip title="編集する">
+          <Tooltip title="Edit">
             <EditOutlined
               className="icon_action_table edit"
               onClick={() => showModalEdit(record._id)}
             />
           </Tooltip>
-          <Tooltip title="削除する">
+          <Tooltip title="Delete">
             <Popconfirm
               title="削除してもよろしいですか?"
               onConfirm={() => deleteVoid(record._id)}
-              okText="はい"
-              cancelText="いいえ"
+              okText="Yes"
+              cancelText="No"
             >
               <DeleteOutlined
                 className="icon_action_table delete"
@@ -207,30 +214,40 @@ const News: React.FC = () => {
 
 
 
-  const handleOk = async () => {
+  const formatJapaneseDate = (value: dayjs.Dayjs | null) => {
+    if (!value) return '';
+    const dayOfWeek = value.format('dd'); // (水)
+    const formattedDate = value.format('MM月DD日'); // 10月3日
+    const time = value.format('HH時mm分'); // 0時30分
+    const isLateNight = value.hour() < 5 ? '深夜' : ''; // Để xác định 深夜
+    return `${formattedDate}(${dayOfWeek}) ${isLateNight}${time}`;
+  };
+
+  const handleOk = async (values:IInsertNews) => {
+ 
+    let payload = {
+      ...values,
+      upLoadDate: formatJapaneseDate(values.upLoadDate),
+    }
+    
     try {
       dispatch(startLoading());
-      const values = await formModal.validateFields();
-
-      if (titleModal === "新しいニュースを作成する" && modalType === "add") {
-        const insertBody: IInsertNews = { ...values };
-        await addNews(insertBody).then((response) => {
+      if (titleModal === "Add new news" && modalType === "add") {
+        await addNews(payload).then((response) => {
           if (response.status) {
-            message.success("新規追加に成功しました!");
+            message.success("Add successful!");
             refecth();
             handleCancel();
           }
         });
       }
 
-      if (titleModal === "ニュースを編集する" && modalType === "edit") {
-
-        const updateBody: INewsTable = { ...values };
-        await updateNews(updateBody, news?._id).then((response) => {
+      if (titleModal === "Edit news" && modalType === "edit") {
+        await updateNews(payload, news?._id).then((response) => {
           if (response.status) {
             refecth();
             handleCancel();
-            message.success("編集が完了しました!");
+            message.success("Edit successful!");
           }
         });
 
@@ -254,7 +271,7 @@ const News: React.FC = () => {
       dispatch(startLoading());
       await deleteNews(_id).then(response => {
         if (response.status) {
-          dispatch(showNotification({ message: "削除に成功しました!", type: "success" }))
+          dispatch(showNotification({ message: "Delete successful!", type: "success" }))
           refecth();
         } else {
           // thông báo lỗi
@@ -265,7 +282,7 @@ const News: React.FC = () => {
     } catch (error) {
       dispatch(
         showNotification({
-          message: "削除に失敗しました!",
+          message: "Delete fail!",
           type: "error",
         })
       );
@@ -287,13 +304,13 @@ const News: React.FC = () => {
     return (
       <div className="page_container_header_extra">
 
-        <AppButton className="default_btn_refresh" title="輸入" />
+        <AppButton className="default_btn_refresh" title="Import" />
         <AppButton
           className="default_btn_add"
           onClick={showModalAdd}
-          title="作成する"
+          title="Add new"
         />
-        <AppButton className="default_btn_refresh" title="輸出" />
+        <AppButton className="default_btn_refresh" title="Export" />
 
 
       </div>
