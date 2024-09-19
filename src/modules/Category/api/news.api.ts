@@ -3,6 +3,16 @@ import {API_CATEGORY, endpoints} from '../../../services/endpoint';
 import { IResultNewsType, ISearchNewsType, IUpdateNewsType, ITable } from '../interfaces/TypeNewsType';
 import { IInsertNews, INewsTable, IResultNews, ISearchNews,  } from '../interfaces/TypeNews';
 
+
+
+export const getAllNewsType= () => {
+    return request<IResultNewsType>(
+        "get",
+        `${API_CATEGORY}/${endpoints.category.newsType.getAll}`
+    );
+};
+
+
 export const getListNewsType= (body: ISearchNewsType) => {
     return request<IResultNewsType>(
         "post",

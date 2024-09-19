@@ -102,7 +102,7 @@ const MListNewsType: React.FC<Props> = ({ typeSearch, setNewsType, newsType, for
             setDataTable([]);
             dispatch(
                 showNotification({
-                    message: "Lấy dữ liệu thất bại.",
+                    message: "Get data fail!",
                     type: "error",
                 })
             );
@@ -148,23 +148,23 @@ const MListNewsType: React.FC<Props> = ({ typeSearch, setNewsType, newsType, for
                 autoComplete="off"
             >
                 <div className='search_form_container'>
-                    <Form.Item label="コード" name="typeCode">
-                        <AppInput placeholder="コードを入力してください" />
+                    <Form.Item label="Code" name="typeCode">
+                        <AppInput  />
                     </Form.Item>
-                    <Form.Item label="ニュースタイプ" name="typeNameJP">
-                        <AppInput placeholder="ニュースタイプを入力してください" />
+                    <Form.Item label="News type name" name="typeNameJP">
+                        <AppInput  />
                     </Form.Item>
 
                     <Form.Item label={" "}>
                         <div className="btn_search_qldm">
                             <AppButton
                                 className="default_btn_search"
-                                title="Tìm kiếm"
+                                title="Search"
                                 onClick={() => formListNewsType.submit()}
                             />
                             <AppButton
                                 className="default_btn_refresh"
-                                title="Xoá điều kiện"
+                                title="Clear"
                                 onClick={() => {
                                     formListNewsType.resetFields()
                                     setSearchParams({
@@ -184,7 +184,7 @@ const MListNewsType: React.FC<Props> = ({ typeSearch, setNewsType, newsType, for
             </Form>
 
             <AppTable
-                titleTable="ニュースタイプリスト"
+                titleTable="News type list"
                 total={pagination.total}
                 columns={columnTable as ColumnsType<any>}
                 data={dataTable}

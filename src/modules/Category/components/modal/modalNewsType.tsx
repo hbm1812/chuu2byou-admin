@@ -39,7 +39,7 @@ const ModalNewsType: React.FC<Props> = ({
 
   const validateProductCode = (_: any, value: string) => {
     if ((modalType === "edit" && value !== newsType?.typeCode && newsTypeCode.includes(value)) || (modalType === "add" && newsTypeCode.includes(value))) {
-      return Promise.reject(new Error("コードは既に存在します。"));
+      return Promise.reject(new Error("The code already exists"));
     }
     return Promise.resolve();
   };
@@ -58,7 +58,7 @@ const ModalNewsType: React.FC<Props> = ({
             { required: !isDisable, message: 'コードを入力してください' },
             {
               pattern: /^[a-zA-Z0-9-_.\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]+$/,
-              message: "文字、数字、ダッシュ、アンダースコア、ピリオド、日本語文字のみが使用できます。",
+              message: "Only letters, numbers, dashes, underscores, periods, and Japanese characters are allowed.",
             },
             {
               validator: validateProductCode
@@ -71,7 +71,7 @@ const ModalNewsType: React.FC<Props> = ({
             { required: !isDisable, message: 'ニュースタイプを入力してください' },
             {
               pattern: /^[a-zA-Z0-9-_.\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\s]+$/,
-              message: "文字、数字、ダッシュ、アンダースコア、ピリオド、日本語文字のみが使用できます。",
+              message: "Only letters, numbers, dashes, underscores, periods, and Japanese characters are allowed.",
             },
           ]}>
             <AppInput disableWithPopup={isDisable} />

@@ -37,7 +37,7 @@ const NewsType: React.FC = () => {
     const showModalAdd = () => {
         setIsModalOpen(true);
         setModalType("add");
-        setTitleModal("新しいタイプのニュースを作成する");
+        setTitleModal("Add new news type");
     };
 
     const showModalDetail = async (_id: any) => {
@@ -48,7 +48,7 @@ const NewsType: React.FC = () => {
                 setNewsType(rp.result);
                 setIsModalOpen(true);
                 setModalType("detail");
-                setTitleModal("ニュースタイプの詳細");
+                setTitleModal("Detail news type");
             }
         } catch (e) {
             console.error(e);
@@ -66,7 +66,7 @@ const NewsType: React.FC = () => {
                 setNewsType(rp.result);
                 setIsModalOpen(true);
                 setModalType("edit");
-                setTitleModal("ニュースの種類を編集する");
+                setTitleModal("Edit news type");
             }
         } catch (e) {
             console.error(e);
@@ -113,13 +113,13 @@ const NewsType: React.FC = () => {
     const columnTable: ColumnsType<ITable> = [
         { title: "#", dataIndex: "index", key: "index", },
         {
-            title: "typeCode",
+            title: "Code",
             dataIndex: "typeCode",
             key: "typeCode",
 
         },
         {
-            title: "typeNameJP",
+            title: "Name",
             dataIndex: "typeNameJP",
             key: "typeNameJP",
             render: (text: string) => <div style={{ textAlign: 'left' }}>{text}</div>,
@@ -131,24 +131,24 @@ const NewsType: React.FC = () => {
             key: "action",
             render: (_, record: any) => (
                 <div style={{ textAlign: "center" }}>
-                    <Tooltip title="詳細を見る">
+                    <Tooltip title="Detail">
 
                         <EyeOutlined className="icon_action_table detail"
                             onClick={() => showModalDetail(record._id)}
                         />
                     </Tooltip>
-                    <Tooltip title="編集する">
+                    <Tooltip title="Edit">
                         <EditOutlined
                             className="icon_action_table edit"
                             onClick={() => showModalEdit(record._id)}
                         />
                     </Tooltip>
-                    <Tooltip title="削除する">
+                    <Tooltip title="Delete">
                         <Popconfirm
-                            title="削除してもよろしいですか?"
+                            title="Are you sure to delete this task??"
                             onConfirm={() => deleteVoid(record._id)}
-                            okText="はい"
-                            cancelText="いいえ"
+                            okText="Yes"
+                            cancelText="No"
                         >
                             <DeleteOutlined
                                 className="icon_action_table delete"
@@ -193,7 +193,7 @@ const NewsType: React.FC = () => {
             setDataTable([]);
             dispatch(
                 showNotification({
-                    message: "Lấy dữ liệu thất bại.",
+                    message: "Get data fail!",
                     type: "error",
                 })
             );
@@ -221,25 +221,25 @@ const NewsType: React.FC = () => {
             dispatch(startLoading());
             const values = await formModal.validateFields();
 
-            if (titleModal === "新しいタイプのニュースを作成する" && modalType === "add") {
+            if (titleModal === "Add new news type" && modalType === "add") {
                 const insertBody: IAddNewsType = { ...values };
                 await addNewsType(insertBody).then((response) => {
                     if (response.status) {
-                        message.success("新規追加に成功しました!");
+                        message.success("Add successful!");
                         refecth();
                         handleCancel();
                     }
                 });
             }
 
-            if (titleModal === "ニュースの種類を編集する" && modalType === "edit") {
+            if (titleModal === "Edit news type" && modalType === "edit") {
 
                 const updateBody: IUpdateNewsType = { ...values };
                 await updateNewsType(updateBody, newsType?._id).then((response) => {
                     if (response.status) {
                         refecth();
                         handleCancel();
-                        message.success("編集が完了しました!");
+                        message.success("Edit successful!");
                     }
                 });
 
@@ -262,7 +262,7 @@ const NewsType: React.FC = () => {
             dispatch(startLoading());
             await deleteNewsType(_id).then(response => {
                 if (response.status) {
-                    dispatch(showNotification({ message: "削除に成功しました!", type: "success" }))
+                    dispatch(showNotification({ message: "Delete successful!", type: "success" }))
                     refecth();
                 } else {
                     // thông báo lỗi
@@ -273,7 +273,7 @@ const NewsType: React.FC = () => {
         } catch (error) {
             dispatch(
                 showNotification({
-                    message: "削除に失敗しました!",
+                    message: "Delete fail!",
                     type: "error",
                 })
             );
@@ -297,13 +297,13 @@ const NewsType: React.FC = () => {
         return (
             <div className="page_container_header_extra">
 
-                <AppButton className="default_btn_refresh" title="輸入" />
+                <AppButton className="default_btn_refresh" title="Import" />
                 <AppButton
                     className="default_btn_add"
                     onClick={showModalAdd}
-                    title="作成する"
+                    title="Add new"
                 />
-                <AppButton className="default_btn_refresh" title="輸出" />
+                <AppButton className="default_btn_refresh" title="Export" />
 
 
             </div>
@@ -312,7 +312,7 @@ const NewsType: React.FC = () => {
 
     return (
         <div>
-            <PageContainer title="ニュースタイプ" extra={extraButton()}>
+            <PageContainer title="News type" extra={extraButton()}>
                 <div className="tablePanel">
                     <SearchNewsType
                         form={form}
@@ -322,18 +322,18 @@ const NewsType: React.FC = () => {
                     <div className="btn_search_qldm">
                         <AppButton
                             className="default_btn_search"
-                            title="検索"
+                            title="Search"
                             onClick={() => form.submit()}
                         />
 
                         <AppButton
                             className="default_btn_refresh"
-                            title="検索データをクリア"
+                            title="Clear"
                             onClick={() => deleteDataSearch()}
                         />
                     </div>
                     <AppTable
-                        titleTable="ニュースタイプリスト"
+                        titleTable="News type list"
                         total={pagination.total}
                         columns={columnTable as ColumnsType<any>}
                         data={dataTable}

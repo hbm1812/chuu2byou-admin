@@ -3,7 +3,7 @@ export interface ISearchNews {
     size?: number;
     sorts?: string[];
     title?: string | null;
-    type_number?: string | null;
+    typeCode?: string | null;
     date?: string |number |null;
   }
 

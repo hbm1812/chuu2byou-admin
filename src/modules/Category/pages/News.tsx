@@ -99,7 +99,7 @@ const News: React.FC = () => {
     setSearchParams({
       ...searchParams,
       title: values.title && values.title !== "" ? values.title : undefined,
-      type_number: values.type_number && values.type_number !== "" ? values.type_number : undefined,
+      typeCode: values.typeCode && values.typeCode !== "" ? values.typeCode : undefined,
       date: values.date && values.date !== "" ? values.date : undefined,
 
       page: 0,
@@ -117,7 +117,8 @@ const News: React.FC = () => {
   // const [dataTable, setDataTable] = useState<ITableNews[] | []>([]);
 
   const columnTable: ColumnsType<INewsTable> = [
-    { title: "index", dataIndex: "index", key: "index", },
+    { title: "#", dataIndex: "index", key: "index", },
+
     {
       title: "title",
       dataIndex: "title",
@@ -129,8 +130,7 @@ const News: React.FC = () => {
       title: "thumbnail", dataIndex: "thumbnail", key: "thumbnail",
       render: (text: string) => <div style={{ width: 70, height: 50 }} ><img style={{ width: "200%", height: "100%" }} src={text} alt="" /> </div>,
     },
-    { title: "newsCode", dataIndex: "newsCode", key: "newsCode" },
-    { title: "typeCode", dataIndex: "typeCode", key: "typeCode" },
+    { title: "Type", dataIndex: "typeCode", key: "typeCode" },
     { title: "upLoadDate", dataIndex: "upLoadDate", key: "upLoadDate" },
     {
       title: "action",
@@ -152,7 +152,7 @@ const News: React.FC = () => {
           </Tooltip>
           <Tooltip title="Delete">
             <Popconfirm
-              title="削除してもよろしいですか?"
+              title="Are you sure to delete this task?"
               onConfirm={() => deleteVoid(record._id)}
               okText="Yes"
               cancelText="No"
@@ -200,7 +200,7 @@ const News: React.FC = () => {
       setDataTable([]);
       dispatch(
         showNotification({
-          message: "Lấy dữ liệu thất bại.",
+          message: "Get data fail!",
           type: "error",
         })
       );
@@ -298,6 +298,7 @@ const News: React.FC = () => {
     formModal.resetFields();
     setModalType("");
     setTitleModal(" ");
+    setNewsType(null);
   };
 
   const extraButton = () => {
@@ -324,7 +325,7 @@ const News: React.FC = () => {
   };
   return (
     <div>
-      <PageContainer title="ニュース" extra={extraButton()}>
+      <PageContainer title="News" extra={extraButton()}>
         <div className="tablePanel">
           <SearchNews
             form={form}
@@ -334,18 +335,18 @@ const News: React.FC = () => {
           <div className="btn_search_qldm">
             <AppButton
               className="default_btn_search"
-              title="検索"
+              title="Search"
               onClick={() => form.submit()}
             />
 
             <AppButton
               className="default_btn_refresh"
-              title="検索データをクリア"
+              title="Clear"
               onClick={() => deleteDataSearch()}
             />
           </div>
           <AppTable
-            titleTable="ニュースリスト"
+            titleTable="News list"
             total={pagination.total}
             columns={columnTable as ColumnsType<any>}
             data={dataTable}

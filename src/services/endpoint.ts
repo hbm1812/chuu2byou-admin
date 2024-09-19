@@ -36,6 +36,7 @@ export const endpoints = {
       upload:`upload/image`,
     },
     newsType: {
+      getAll:`newsType/get-no-params`,
       getList: `newsType/get-all`,
       add: `newsType/add`,
       detail:`newsType/detail`,

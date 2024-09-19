@@ -18,16 +18,16 @@ const TVSearch: React.FC<Props> = ({
             <Form
                 form={form}
                 layout="vertical"
-                name="NewsType"
+                name="TV"
                 onFinish={onSearch}
                 autoComplete="off"
             >
                 <div className='search_form_container'>
-                    <Form.Item label="テレビコード" name="tvCode">
-                        <AppInput placeholder="テレビコードを入力してください" />
+                    <Form.Item label="Code" name="tvCode">
+                        <AppInput placeholder="Please enter code" />
                     </Form.Item>
-                    <Form.Item label="テレビ名" name="tvName">
-                        <AppInput placeholder="テレビ名を入力してください" />
+                    <Form.Item label="TV name" name="tvName">
+                        <AppInput placeholder="Please enter TV name" />
                     </Form.Item>
 
                 </div>

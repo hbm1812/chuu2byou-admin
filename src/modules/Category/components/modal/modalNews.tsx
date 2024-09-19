@@ -14,6 +14,7 @@ import RichTextEditor from '../../../../components/common/RichTextEditor';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import weekday from 'dayjs/plugin/weekday';
+import AppImageSelect from '../../../../components/common/AppImageSelect';
 
 
 dayjs.extend(customParseFormat);
@@ -68,7 +69,6 @@ const ModalNews: React.FC<Props> = ({
         return null; // Trả về null nếu không khớp với định dạng
     };
 
-
     useEffect(() => {
         if (modalType === "add") {
             setIsDisable(false);
@@ -81,13 +81,14 @@ const ModalNews: React.FC<Props> = ({
             setIsDisable(modalType === "detail");
             // setThumbnailUrl(news.thumbnail); // Load thumbnail khi edit
             setContent(news.content || '');
+           
         }
 
     }, [news, modalType]);
 
     const validateProductCode = (_: any, value: string) => {
         if ((modalType === "edit" && value !== news?.newsCode && newsCode.includes(value)) || (modalType === "add" && newsCode.includes(value))) {
-            return Promise.reject(new Error("コードは既に存在します。"));
+            return Promise.reject(new Error("The code already exists"));
         }
         return Promise.resolve();
     };
@@ -140,21 +141,22 @@ const ModalNews: React.FC<Props> = ({
     //     showUploadList: false, // Không hiển thị danh sách upload
     // };
 
- // Lắng nghe sự thay đổi của title và typeCodeName để cập nhật newsCode
- useEffect(() => {
-    const titleValue = form.getFieldValue('title');
-    const typeCodeName = form.getFieldValue('typeCode');
 
-    if (titleValue && typeCodeName) {
-        const halfTitle = titleValue.slice(0, Math.floor(titleValue.length / 2)); // Lấy nửa đầu của title
-        const generatedNewsCode = `news_${typeCodeName}_${halfTitle}`;
+    // Lắng nghe sự thay đổi của title và typeCodeName để cập nhật newsCode
+    useEffect(() => {
+        const titleValue = form.getFieldValue('title');
+        const typeCodeName = form.getFieldValue('typeCode');
 
-        // Cập nhật giá trị của newsCode
-        form.setFieldsValue({
-            newsCode: generatedNewsCode,
-        });
-    }
-}, [form, form.getFieldValue('title'), form.getFieldValue('typeCodeName')]);
+        if (titleValue && typeCodeName) {
+            const halfTitle = titleValue.slice(0, Math.floor(titleValue.length / 2)); // Lấy nửa đầu của title
+            const generatedNewsCode = `news_${typeCodeName}_${halfTitle}`;
+
+            // Cập nhật giá trị của newsCode
+            form.setFieldsValue({
+                newsCode: generatedNewsCode,
+            });
+        }
+    }, [form, form.getFieldValue('title'), form.getFieldValue('typeCode')]);
 
     return (
         <div className="form_qlvt">
@@ -164,21 +166,22 @@ const ModalNews: React.FC<Props> = ({
                 name="News"
                 onFinish={(values) => onSubmit({ ...values, content })}
                 autoComplete="off"
+
             >
-                <Form.Item label="title" name="title" rules={[
-                    { required: !isDisable, message: 'コードを入力してください' },
+                <Form.Item label="Title" name="title" rules={[
+                    { required: !isDisable, message: 'Title cannot be empty' },
                     {
                         pattern: /^[a-zA-Z0-9-_.{}[\]"'!;:~！？。、【】『』「」（）《》〈〉｛｝・／￥＠＃％＆＊\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]+$/,
-                        message: "文字、数字、ダッシュ、アンダースコア、ピリオド、日本語文字のみが使用できます。",
+                        message: "Only letters, numbers, dashes, underscores, periods, and Japanese characters are allowed.",
                     },
                 ]}>
                     <AppInput disableWithPopup={isDisable} />
                 </Form.Item>
 
                 <div className="modal_form_container_3_row">
-                    <Form.Item label="newsCode" name="newsCode" rules={[
-                        { required: !isDisable, message: 'コードを入力してください' },
-                        
+                    <Form.Item label="Code" name="newsCode" rules={[
+                        { required: !isDisable, message: 'Code cannot be empty' },
+
                         {
                             validator: validateProductCode
                         },
@@ -186,31 +189,30 @@ const ModalNews: React.FC<Props> = ({
                         <AppInput disableWithPopup={isDisable} />
                     </Form.Item>
 
-                    <Form.Item label="タイプコード" name="typeCode" rules={[
-                        { required: true, message: 'タイプコードを入力してください' },
+                    <Form.Item label="News type" name="typeCode" rules={[
+                        { required: true, message: 'News type cannot be empty' },
                     ]}>
-                        <div>
                             <AppInput
-                                placeholder={modalType === "detail" ? " " : "タイプコードを入力してください"}
+                                placeholder={modalType === "detail" ? " " : "Please enter news type"}
                                 widthAppInput={"100%"}
                                 readOnly
                                 onClick={showModalNewsType}
                                 value={newsType?.name || ""}
                                 disableWithPopup={isDisable}
+                                name='typeCode'
                             />
-                            <input
+                            {/* <input
                                 type="hidden"
                                 value={newsType?.id || ""}
                                 name="typeCode"
-                            />
-                        </div>
+                            /> */}
                     </Form.Item>
 
                     <Form.Item
-                        label="アップロード日"
+                        label="Upload time"
                         name="upLoadDate"
                         rules={[
-                            { required: true, message: "アップロード日を入力してください" },
+                            { required: true, message: "Upload time cannot be empty" },
                         ]}
                     >
                         <DatePicker
@@ -221,14 +223,12 @@ const ModalNews: React.FC<Props> = ({
                 </div>
                 <br />
 
-                <Form.Item label="Thumbnail" name="thumbnail"  rules={[
-                    { required: !isDisable, message: 'thumbnailを入力してください' },
-                ]}>
-                    <AppInput disableWithPopup={isDisable} />
+                <Form.Item label="Thumbnail" name="thumbnail" rules={[{ required: !isDisable, message: 'Thumbnail cannot be empty' }]}>
+                    <AppImageSelect value={thumbnailUrl} onChange={setThumbnailUrl} isReadOnly={isDisable} />
                 </Form.Item>
 
-                <Form.Item label="content" name="content" rules={[
-                    { required: !isDisable, message: 'コードを入力してください' },
+                <Form.Item label="Content" name="content" rules={[
+                    { required: !isDisable, message: 'Content cannot be empty' },
                 ]}>
                     <RichTextEditor
                         value={content}
@@ -242,7 +242,7 @@ const ModalNews: React.FC<Props> = ({
                     onSubmit={onSubmitNewsType}
                     onClose={onCloseNewsType}
                     isOpen={openModalAddInput}
-                    title="ニュースタイプ一覧"
+                    title="News type list"
                     typeOpenModal={typeOpenModalAddInput}
                 >
                     {typeOpenModalAddInput === "newsType" && (

@@ -25,11 +25,11 @@ const SearchNewsType: React.FC<Props> = ({
                 autoComplete="off"
             >
                 <div className='search_form_container'>
-                    <Form.Item label="コード" name="typeCode">
-                        <AppInput placeholder="コードを入力してください" />
+                    <Form.Item label="Code" name="typeCode">
+                        <AppInput placeholder="Please enter code" />
                     </Form.Item>
-                    <Form.Item label="ニュースタイプ" name="typeNameJP">
-                        <AppInput placeholder="ニュースタイプを入力してください" />
+                    <Form.Item label="News type name" name="typeNameJP">
+                        <AppInput placeholder="Please enter news type name" />
                     </Form.Item>
 
                 </div>

@@ -43,7 +43,7 @@ const TV = (props: Props) => {
     const showModalAdd = () => {
         setIsModalOpen(true);
         setModalType("add");
-        setTitleModal("新しいテレビ放送を作成する");
+        setTitleModal("Add new broadcast time");
     };
 
     const showModalDetail = async (_id: any) => {
@@ -54,7 +54,7 @@ const TV = (props: Props) => {
                 setTv(rp.result);
                 setIsModalOpen(true);
                 setModalType("detail");
-                setTitleModal("テレビ放送の詳細");
+                setTitleModal("Detail broadcast time");
             }
         } catch (e) {
             console.error(e);
@@ -72,7 +72,7 @@ const TV = (props: Props) => {
                 setTv(rp.result);
                 setIsModalOpen(true);
                 setModalType("edit");
-                setTitleModal("テレビ放送を編集する");
+                setTitleModal("Edit broadcast time");
             }
         } catch (e) {
             console.error(e);
@@ -120,48 +120,48 @@ const TV = (props: Props) => {
         { title: "#", dataIndex: "index", key: "index", },
    
         {
-            title: "テレビ名",
+            title: "TV name",
             dataIndex: "tvName",
             key: "tvName",
             render: (text: string) => <div style={{ textAlign: 'left' }}>{text}</div>,
 
         },
         {
-            title: "テレビコード",
+            title: "Code",
             dataIndex: "tvCode",
             key: "tvCode",
 
         },
         {
-            title: "放送時間",
+            title: "Broadcast time",
             dataIndex: "broadcastTime",
             key: "broadcastTime",
 
         },
         {
-            title: "行動",
+            title: "Action",
             dataIndex: "action",
             key: "action",
             render: (_, record: any) => (
                 <div style={{ textAlign: "center" }}>
-                    <Tooltip title="詳細を見る">
+                    <Tooltip title="Detail">
 
                         <EyeOutlined className="icon_action_table detail"
                             onClick={() => showModalDetail(record._id)}
                         />
                     </Tooltip>
-                    <Tooltip title="編集する">
+                    <Tooltip title="Edit">
                         <EditOutlined
                             className="icon_action_table edit"
                             onClick={() => showModalEdit(record._id)}
                         />
                     </Tooltip>
-                    <Tooltip title="削除する">
+                    <Tooltip title="Delete">
                         <Popconfirm
-                            title="削除してもよろしいですか?"
+                            title="Are you sure to delete this task?"
                             onConfirm={() => deleteVoid(record._id)}
-                            okText="はい"
-                            cancelText="いいえ"
+                            okText="Yes"
+                            cancelText="No"
                         >
                             <DeleteOutlined
                                 className="icon_action_table delete"
@@ -243,23 +243,23 @@ const TV = (props: Props) => {
           }
         try {
             dispatch(startLoading());
-            if (titleModal === "新しいテレビ放送を作成する" && modalType === "add") {
+            if (titleModal === "Add new broadcast time" && modalType === "add") {
                 await addTV(payload).then((response) => {
                     if (response.status) {
-                        message.success("新規追加に成功しました!");
+                        message.success("Add successful!");
                         refecth();
                         handleCancel();
                     }
                 });
             }
 
-            if (titleModal === "テレビ放送を編集する" && modalType === "edit") {
+            if (titleModal === "Edit broadcast time" && modalType === "edit") {
                 console.log(payload,"payload")
                 await updateTV(payload, tv?._id).then((response) => {
                     if (response.status) {
                         refecth();
                         handleCancel();
-                        message.success("編集が完了しました!");
+                        message.success("Edit successful!");
                     }
                 });
 
@@ -282,7 +282,7 @@ const TV = (props: Props) => {
             dispatch(startLoading());
             await deleteTV(_id).then(response => {
                 if (response.status) {
-                    dispatch(showNotification({ message: "削除に成功しました!", type: "success" }))
+                    dispatch(showNotification({ message: "Delete successful!", type: "success" }))
                     refecth();
                 } else {
                     // thông báo lỗi
@@ -293,7 +293,7 @@ const TV = (props: Props) => {
         } catch (error) {
             dispatch(
                 showNotification({
-                    message: "削除に失敗しました!",
+                    message: "Delete fail!",
                     type: "error",
                 })
             );
@@ -317,13 +317,13 @@ const TV = (props: Props) => {
         return (
             <div className="page_container_header_extra">
 
-                <AppButton className="default_btn_refresh" title="輸入" />
+                <AppButton className="default_btn_refresh" title="Import" />
                 <AppButton
                     className="default_btn_add"
                     onClick={showModalAdd}
-                    title="作成する"
+                    title="Add new"
                 />
-                <AppButton className="default_btn_refresh" title="輸出" />
+                <AppButton className="default_btn_refresh" title="Export" />
 
 
             </div>
@@ -331,7 +331,7 @@ const TV = (props: Props) => {
     };
     return (
         <div>
-            <PageContainer title="テレビ放送" extra={extraButton()}>
+            <PageContainer title="Broadcast time" extra={extraButton()}>
                 <div className="tablePanel">
                     <TVSearch
                         form={form}
@@ -341,18 +341,18 @@ const TV = (props: Props) => {
                     <div className="btn_search_qldm">
                         <AppButton
                             className="default_btn_search"
-                            title="検索"
+                            title="Search"
                             onClick={() => form.submit()}
                         />
 
                         <AppButton
                             className="default_btn_refresh"
-                            title="検索データをクリア"
+                            title="Clear"
                             onClick={() => deleteDataSearch()}
                         />
                     </div>
                     <AppTable
-                        titleTable="ニュースタイプリスト"
+                        titleTable="Broadcast time list"
                         total={pagination.total}
                         columns={columnTable as ColumnsType<any>}
                         data={dataTable}

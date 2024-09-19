@@ -68,7 +68,7 @@ const ModalTV: React.FC<Props> = ({
 
     const validateProductCode = (_: any, value: string) => {
         if ((modalType === "edit" && value !== tv?.tvCode && tvCode.includes(value)) || (modalType === "add" && tvCode.includes(value))) {
-            return Promise.reject(new Error("コードは既に存在します。"));
+            return Promise.reject(new Error("The code already exists"));
         }
         return Promise.resolve();
     };
@@ -84,13 +84,13 @@ const ModalTV: React.FC<Props> = ({
             >
                 <div className="modal_form_container_3_row">
                     <Form.Item
-                        label="テレビコード"
+                        label="Code"
                         name="tvCode"
                         rules={[
-                            { required: !isDisable, message: 'テレビコードドを入力してください' },
+                            { required: !isDisable, message: 'Code cannot be empty' },
                             {
                                 pattern: /^[a-zA-Z0-9-_.\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]+$/,
-                                message: "文字、数字、ダッシュ、アンダースコア、ピリオド、日本語文字のみが使用できます。",
+                                message: "Only letters, numbers, dashes, underscores, periods, and Japanese characters are allowed.",
                             },
                             {
                                 validator: validateProductCode
@@ -101,13 +101,13 @@ const ModalTV: React.FC<Props> = ({
                     </Form.Item>
 
                     <Form.Item
-                        label="テレビ名"
+                        label="TV name"
                         name="tvName"
                         rules={[
-                            { required: !isDisable, message: 'テレビ名を入力してください' },
+                            { required: !isDisable, message: 'TV name cannot be empty' },
                             {
                                 pattern: /^[a-zA-Z0-9-_.\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\s]+$/,
-                                message: "文字、数字、ダッシュ、アンダースコア、ピリオド、日本語文字のみが使用できます。",
+                                message: "Only letters, numbers, dashes, underscores, periods, and Japanese characters are allowed.",
                             },
                         ]}
                     >
@@ -127,16 +127,15 @@ const ModalTV: React.FC<Props> = ({
                 
                <br />
                 <Form.Item
-                    label="説明"
+                    label="Description"
                     name="description"
                     rules={[
                         {
                             pattern: /^[a-zA-Z0-9-_.\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\s]+$/,
-                            message: "文字、数字、ダッシュ、アンダースコア、ピリオド、日本語文字のみが使用できます。",
+                            message: "Only letters, numbers, dashes, underscores, periods, and Japanese characters are allowed.",
                         },
                     ]}
                 >
-                    {/* <AppTextArea autoSize={{ minRows: 4 }} readOnly={isDisable} /> */}
                     <AppInput disableWithPopup={isDisable} />
                 </Form.Item>
             </Form>
