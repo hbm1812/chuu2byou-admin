@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import PageContainer from '../../../components/common/PageContainer';
 import { useDispatch } from 'react-redux';
 import SearchNews from '../components/search/NewsSearch';
-import { Form, message, Popconfirm, Tooltip } from 'antd';
+import { Form, Image, message, Popconfirm, Tooltip, UploadFile } from 'antd';
 import { IInsertNews, INewsTable, ISearchNews } from '../interfaces/TypeNews';
 import useRefresh from '../../../hooks/useRefresh';
 import AppTable from '../../../components/common/AppTable';
@@ -38,7 +38,8 @@ const News: React.FC = () => {
   const [news, setNews] = useState<INewsTable>();
   const [newsCode, setNewsCode] = useState<string[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [thumbnailUrl, setThumbnailUrl] = useState("");
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   const [newsType, setNewsType] = useState<{ id: string; name: string } | null>(null);
 
@@ -58,6 +59,7 @@ const News: React.FC = () => {
         setIsModalOpen(true);
         setModalType("detail");
         setTitleModal("Detail news");
+        setThumbnailUrl(rp.result.thumbnail);
       }
     } catch (e) {
       console.error(e);
@@ -75,6 +77,7 @@ const News: React.FC = () => {
         setIsModalOpen(true);
         setModalType("edit");
         setTitleModal("Edit news");
+        setThumbnailUrl(rp.result.thumbnail);
       }
     } catch (e) {
       console.error(e);
@@ -124,11 +127,13 @@ const News: React.FC = () => {
       dataIndex: "title",
       key: "title",
       render: (text: string) => <div style={{ textAlign: 'left' }}>{text}</div>,
+      width:400,
 
     },
     {
       title: "thumbnail", dataIndex: "thumbnail", key: "thumbnail",
-      render: (text: string) => <div style={{ width: 70, height: 50 }} ><img style={{ width: "200%", height: "100%" }} src={text} alt="" /> </div>,
+      render: (text: string) => <Image width={100} src={text}  />,
+      width:100,
     },
     { title: "Type", dataIndex: "typeCode", key: "typeCode" },
     { title: "upLoadDate", dataIndex: "upLoadDate", key: "upLoadDate" },
@@ -228,6 +233,7 @@ const News: React.FC = () => {
     let payload = {
       ...values,
       upLoadDate: formatJapaneseDate(values.upLoadDate),
+      
     }
     
     try {
@@ -299,6 +305,8 @@ const News: React.FC = () => {
     setModalType("");
     setTitleModal(" ");
     setNewsType(null);
+    setThumbnailUrl("");
+    setFileList([]);
   };
 
   const extraButton = () => {
@@ -371,6 +379,10 @@ const News: React.FC = () => {
             newsCode={newsCode}
             newsType={newsType}
             setNewsType={setNewsType}
+            thumbnailUrl={thumbnailUrl }
+            setThumbnailUrl={setThumbnailUrl}
+            fileList={fileList}
+            setFileList={setFileList}
           />
         </AppModal>
       </PageContainer>

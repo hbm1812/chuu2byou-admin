@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Form, FormInstance, Upload, message, Image, DatePicker } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Form, FormInstance, Upload, message, Image, DatePicker, GetProp, UploadProps, UploadFile, Button } from 'antd';
+import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
 import AppInput from '../../../../components/common/AppInput';
 import { IInsertNews, INewsTable } from '../../interfaces/TypeNews';
 import AppDatePicker from '../../../../components/common/AppDatePicker';
@@ -21,6 +21,7 @@ dayjs.extend(customParseFormat);
 dayjs.extend(weekday);
 dayjs.locale('ja'); // Đặt locale là Nhật Bản
 
+
 type Props = {
     title?: string;
     onSubmit: (values: IInsertNews) => Promise<void>;
@@ -30,6 +31,10 @@ type Props = {
     newsCode: string[];
     newsType: { id: string; name: string } | null;
     setNewsType: React.Dispatch<React.SetStateAction<{ id: string; name: string } | null>>;
+    thumbnailUrl?:string | null;
+    setThumbnailUrl: Dispatch<SetStateAction<string>>
+    fileList?: UploadFile<any>[];
+    setFileList: Dispatch<SetStateAction<UploadFile<any>[]>>;
 };
 
 const ModalNews: React.FC<Props> = ({
@@ -41,14 +46,66 @@ const ModalNews: React.FC<Props> = ({
     newsCode,
     newsType,
     setNewsType,
+    thumbnailUrl,
+    setThumbnailUrl,
+    fileList,
+    setFileList,
 }) => {
     const [isDisable, setIsDisable] = useState(false);
     const [openModalAddInput, setOpenModalAddInput] = useState<boolean>(false);
     const [typeOpenModalAddInput, setTypeOpenModalAddInput] = useState<string>("newsType");
     const [formListNewsType] = Form.useForm<ISearchNewsType>();
-    const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
 
     const [content, setContent] = useState(news?.content || '');
+
+    const [previewOpen, setPreviewOpen] = useState(false);
+    const [previewImage, setPreviewImage] = useState('');
+    
+    const handleChange: UploadProps['onChange'] = async ({ fileList: newFileList }) => {
+        setFileList(newFileList);
+    
+        if (newFileList.length > 0) {
+            const file = newFileList[0]; // Lấy file đầu tiên (vì chỉ upload 1 ảnh)
+            let imageUrl = file.url || file.thumbUrl;
+    
+            // Nếu không có URL hoặc thumbUrl, lấy base64 từ file
+            if (!imageUrl && file.originFileObj) {
+                imageUrl = await getBase64(file.originFileObj); // Lấy base64 của file
+            }
+    
+            setThumbnailUrl(imageUrl); // Cập nhật URL ảnh hiển thị
+            form.setFieldsValue({ thumbnail: imageUrl }); // Cập nhật giá trị của trường thumbnail trong form
+        } else {
+            // Xóa giá trị thumbnail nếu không có ảnh nào được chọn
+            setThumbnailUrl(null);
+            form.setFieldsValue({ thumbnail: null });
+        }
+    };
+    
+    
+    const handlePreview = async (file: UploadFile) => {
+        if (!file.url && !file.preview) {
+            file.preview = await getBase64(file.originFileObj as File);
+        }
+        setPreviewImage(file.url || (file.preview as string));
+        setPreviewOpen(true);
+    };
+
+    const getBase64 = (file: File): Promise<string> => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = (error) => reject(error);
+        });
+    };
+    
+    const uploadButton = (
+        <div>
+            <PlusOutlined />
+            <div style={{ marginTop: 8 }}>Upload</div>
+        </div>
+    );
 
     // Hàm chuyển đổi chuỗi kiểu Nhật Bản về định dạng DatePicker
     const parseJapaneseDate = (dateString: string): dayjs.Dayjs | null => {
@@ -80,11 +137,21 @@ const ModalNews: React.FC<Props> = ({
             });
             setIsDisable(modalType === "detail");
             // setThumbnailUrl(news.thumbnail); // Load thumbnail khi edit
+            setThumbnailUrl(news.thumbnail);
             setContent(news.content || '');
-           
+            if (news.thumbnail) {
+                const fileFromUrl = {
+                    uid: '-1',
+                    name: 'image.png',
+                    status: 'done',
+                    url: news.thumbnail, // URL của ảnh
+                };
+                setFileList([fileFromUrl]); // Set fileList để hiển thị ảnh
+            }
         }
 
     }, [news, modalType]);
+
 
     const validateProductCode = (_: any, value: string) => {
         if ((modalType === "edit" && value !== news?.newsCode && newsCode.includes(value)) || (modalType === "add" && newsCode.includes(value))) {
@@ -158,6 +225,7 @@ const ModalNews: React.FC<Props> = ({
         }
     }, [form, form.getFieldValue('title'), form.getFieldValue('typeCode')]);
 
+
     return (
         <div className="form_qlvt">
             <Form
@@ -178,7 +246,31 @@ const ModalNews: React.FC<Props> = ({
                     <AppInput disableWithPopup={isDisable} />
                 </Form.Item>
 
-                <div className="modal_form_container_3_row">
+                <div className="modal_form_container_4_row">
+                <Form.Item label="Thumbnail" name="thumbnail" rules={[{ required: !isDisable, message: 'Thumbnail cannot be empty' }]}>
+                    <Upload
+                        listType="picture-card"
+                        fileList={fileList}
+                        onPreview={handlePreview}
+                        onChange={handleChange}
+                        maxCount={1}
+                        className="custom-upload" 
+                    >
+                        {fileList.length >= 1 ? null : uploadButton}
+                    </Upload>
+                    {previewImage && (
+                          <Image
+                          wrapperStyle={{ display: 'none' }}
+                          preview={{
+                            visible: previewOpen,
+                            onVisibleChange: (visible) => setPreviewOpen(visible),
+                            afterOpenChange: (visible) => !visible && setPreviewImage(''),
+                          }}
+                          src={previewImage}
+                           style={{ width: '300px', height: '200px', objectFit: 'cover' }}
+                        />
+                    )}
+                </Form.Item>
                     <Form.Item label="Code" name="newsCode" rules={[
                         { required: !isDisable, message: 'Code cannot be empty' },
 
@@ -192,16 +284,16 @@ const ModalNews: React.FC<Props> = ({
                     <Form.Item label="News type" name="typeCode" rules={[
                         { required: true, message: 'News type cannot be empty' },
                     ]}>
-                            <AppInput
-                                placeholder={modalType === "detail" ? " " : "Please enter news type"}
-                                widthAppInput={"100%"}
-                                readOnly
-                                onClick={showModalNewsType}
-                                value={newsType?.name || ""}
-                                disableWithPopup={isDisable}
-                                name='typeCode'
-                            />
-                            {/* <input
+                        <AppInput
+                            placeholder={modalType === "detail" ? " " : "Please enter news type"}
+                            widthAppInput={"100%"}
+                            readOnly
+                            onClick={showModalNewsType}
+                            value={newsType?.name || ""}
+                            disableWithPopup={isDisable}
+                            name='typeCode'
+                        />
+                        {/* <input
                                 type="hidden"
                                 value={newsType?.id || ""}
                                 name="typeCode"
@@ -221,12 +313,8 @@ const ModalNews: React.FC<Props> = ({
                         />
                     </Form.Item>
                 </div>
-                <br />
-
-                <Form.Item label="Thumbnail" name="thumbnail" rules={[{ required: !isDisable, message: 'Thumbnail cannot be empty' }]}>
-                    <AppImageSelect value={thumbnailUrl} onChange={setThumbnailUrl} isReadOnly={isDisable} />
-                </Form.Item>
-
+             
+                
                 <Form.Item label="Content" name="content" rules={[
                     { required: !isDisable, message: 'Content cannot be empty' },
                 ]}>

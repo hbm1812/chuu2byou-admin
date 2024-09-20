@@ -47,7 +47,7 @@ const AppModal: React.FC<Props & React.ComponentProps<typeof Modal>> = ({
         <div className="btn_search_qldm">
           <AppButton
             className="default_btn_refresh"
-            title="閉じる"
+            title="Close"
             onClick={() => onClose()}
           />
         </div>
@@ -55,12 +55,12 @@ const AppModal: React.FC<Props & React.ComponentProps<typeof Modal>> = ({
         <div className="btn_search_qldm">
           <AppButton
             className="default_btn_search"
-            title={textBtnSubmit ? textBtnSubmit : "確認する"}
+            title={textBtnSubmit ? textBtnSubmit : "OK"}
             onClick={() => onSubmit()}
           />
           <AppButton
             className="default_btn_refresh"
-            title="キャンセル"
+            title="Cancel"
             onClick={() => onClose()}
           />
         </div>

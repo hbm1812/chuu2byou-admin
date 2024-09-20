@@ -230,3 +230,24 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+.modal_form_container_4_row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  .ant-form-item {
+    margin-bottom: 0px !important;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.custom-upload .ant-upload-list-item img {
+  width: 400px; /* Thay đổi chiều rộng theo ý muốn */
+  height: 250px; /* Thay đổi chiều cao theo ý muốn */
+  object-fit: cover; /* Đảm bảo ảnh không bị méo */
+}
+

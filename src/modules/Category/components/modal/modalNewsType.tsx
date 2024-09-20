@@ -22,6 +22,8 @@ const ModalNewsType: React.FC<Props> = ({
 }) => {
   const [isDisable, setIsDisable] = useState(false);
 
+
+
   useEffect(() => {
     if (modalType === "add") {
       setIsDisable(false);
