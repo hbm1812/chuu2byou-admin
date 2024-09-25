@@ -71,9 +71,9 @@ export const MenuProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         }
     };
 
-    // useEffect(() => {
-    //         loadMenu();
-    // }, []);
+    useEffect(() => {
+            loadMenu();
+    }, []);
     useEffect(() => {
         if (userInfo) {
             loadMenu();

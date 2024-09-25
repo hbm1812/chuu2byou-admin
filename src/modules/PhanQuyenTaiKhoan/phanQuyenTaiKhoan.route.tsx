@@ -8,24 +8,24 @@ const QuanLyTaiKhoan  = lazy(() => import("./pages/QuanLyTaiKhoan"));
 
 export const PhanQuyenTaiKhoanRoutes: IRoute[] = [
   {
-    key: "SystemManagement",
-    path: "",
-    label: "システム管理",
-    icon: <FaCertificate />,
+    key: "SM",
+    code:"SM",
+    parentCode: null,
+    isPrivate: true,
     children: [
       {
-        key: "RoleManagement",
-        path: "/role-management",
-        label: "役割管理",
+        key: "RM",
+        code: "RM",
+        parentCode: "SM",
         element: <QuanLyVaiTro />,
-        icon: <FaCertificate />,
+        isPrivate: true,
       },
       {
-        key: "UserManagement",
-        path: "/user-management",
-        label: "ユーザー管理",
+        key: "UM",
+        code: "UM",
+        parentCode: "SM",
         element: <QuanLyTaiKhoan />,
-        icon: <FaCertificate />,
+        isPrivate: true,
       },
     ],
   },

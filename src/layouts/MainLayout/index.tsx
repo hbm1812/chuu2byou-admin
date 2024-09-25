@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Layout, Menu, Dropdown, Avatar } from "antd";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { MenuUnfoldOutlined, UserOutlined } from "@ant-design/icons";
-import logoCMS from "../../assets/images/logo.png";
+import { useLocation, useNavigate } from "react-router-dom";
+import { UserOutlined } from "@ant-design/icons";
+import logoCMS from "../../assets/images/tecapro_logo.png";
 import { useAccount } from "../../context/ContextAccount";
 import { useMenu } from "../../context/ContextMenu";
 import { AiOutlineMenuFold, AiOutlineMenuUnfold } from "react-icons/ai";
 import SEnumParentCode from "../../utils/SEnumParentCode";
-import { IRoute, routes_url } from "../../routes/routes";
+import { IRoute } from "../../routes/routes";
 import AppIcon from "../../components/shared/AppIcon";
 import ModalChangePassword from "../../modules/PhanQuyenTaiKhoan/components/ModalChangePassword";
 
@@ -106,113 +106,44 @@ const MainLayout = (props: Props) => {
   };
 
   const filteredMenu = filterMenuRecursive(menuByUser);
-    // console.log(filteredMenu, 'filteredMenu')
-    
-//   const renderMenuByLevel = (menuItems: IRoute[]): JSX.Element[] => {
-//     return menuItems.map((item) => {
-//       if (item.children && item.children.length > 0) {
-//           // console.log(item.children.some((child) => child.path === location.pathname) ? "hi" : "he")
-//         return (
-//             <SubMenu
-//                 key={item.key}
-//                 title={item.label}
-//                 icon={<AppIcon iconName={item.icon} />}
-//                 className={
-//                   openKeys.includes(item.key) ||
-//                   item.children.some((child) => child.path === location.pathname)
-//                       ? "sub_menu_layout ant-menu-item-selected"
-//                       : "sub_menu_layout ant-menu-item-no-selected"
-//                 }
-//                 onTitleClick={() => handleMenuClick(item.key)}
-//             >
-//               {renderMenuByLevel(item.children)} {/* Gọi lại hàm đệ quy để render các mục con */}
-//             </SubMenu>
-//         );
-//       }
-// // console.log(  location.pathname === item.path ? "hi" : "he")
-//       return (
-//           <Menu.Item
-//               key={item.key}
-//               icon={<AppIcon iconName={item.icon} />}
-//               className={
-//                 location.pathname === item.path
-//                     ? "ant-menu-item-selected"
-//                     : "ant-menu-item-no-selected"
-//               }
-//               onClick={() => handleLink(item.path, item.authority)}
-//           >
-//             {item.label}
-//           </Menu.Item>
-//       );
-//     });
-//   };
-
-const renderMenuItems = () => (
-  <>
-    <Menu.Item
-      key="drawer"
-      icon={<MenuUnfoldOutlined />}
-      className={
-        location.pathname === "drawer"
-          ? "ant-menu-item-selected"
-          : "ant-menu-item-no-selected"
+  const renderMenuByLevel = (menuItems: IRoute[]): JSX.Element[] => {
+    return menuItems.map((item) => {
+      if (item.children && item.children.length > 0) {
+          // console.log(item.children.some((child) => child.path === location.pathname) ? "hi" : "he")
+        return (
+            <SubMenu
+                key={item.key}
+                title={item.label}
+                icon={<AppIcon iconName={item.icon} />}
+                className={
+                  openKeys.includes(item.key) ||
+                  item.children.some((child) => child.path === location.pathname)
+                      ? "sub_menu_layout ant-menu-item-selected"
+                      : "sub_menu_layout ant-menu-item-no-selected"
+                }
+                onTitleClick={() => handleMenuClick(item.key)}
+            >
+              {renderMenuByLevel(item.children)} {/* Gọi lại hàm đệ quy để render các mục con */}
+            </SubMenu>
+        );
       }
-      onClick={toggle}
-    >
-      <Link to="#">Đóng</Link>
-    </Menu.Item>
-    {routes_url
-      .filter((item) => item.isShowMenu !== false)
-      .map((group) =>
-        group.children ? (
-          <SubMenu
-            key={group.key}
-            icon={group.icon}
-            title={group.label}
-            onTitleClick={() => handleMenuClick(group.key)}
-            className={
-              openKeys.includes(group.key)
-                ? "ant-menu-item-selected-drawer"
-                : "ant-menu-item-no-selected-drawer"
-            }
-          >
-            {group.children
-              .filter((item) => item.isShowMenu !== false)
-              .map((item) => (
-                <Menu.Item
-                  key={item.key}
-                  icon={item.icon}
-                  onClick={toggle}
-                  className={
-                    location.pathname === item.path
-                      ? "ant-menu-item-selected"
-                      : "ant-menu-item-no-selected"
-                  }
-                >
-                  <Link to={item.path}>{item.label}</Link>
-                </Menu.Item>
-              ))}
-          </SubMenu>
-        ) : (
+// console.log(  location.pathname === item.path ? "hi" : "he")
+      return (
           <Menu.Item
-            key={group.key}
-            icon={group.icon}
-            onClick={toggle}
-            className={
-              location.pathname === group.path
-                ? "ant-menu-item-selected"
-                : "ant-menu-item-no-selected"
-            }
+              key={item.key}
+              icon={<AppIcon iconName={item.icon} />}
+              className={
+                location.pathname === item.path
+                    ? "ant-menu-item-selected"
+                    : "ant-menu-item-no-selected"
+              }
+              onClick={() => handleLink(item.path, item.authority)}
           >
-            <Link to={group.path}>{group.label}</Link>
+            {item.label}
           </Menu.Item>
-        )
-      )}
-  </>
-);
-
-
-
+      );
+    });
+  };
   return (
     <Layout className="main_layout">
       <Header className="header_layout">
@@ -223,7 +154,7 @@ const renderMenuItems = () => (
             alt="logo"
             onClick={() => navigate("/")}
           />
-          <h2>中二病でも恋がしたい!</h2>
+          <h2>Hệ thống quản lý triển khai hợp đồng</h2>
         </div>
         <div style={{ display: "flex", flexDirection: "row", gap: 40 }}>
           <div style={{ position: "relative", top: 8 }}></div>
@@ -271,8 +202,7 @@ const renderMenuItems = () => (
             openKeys={openKeys}
             onOpenChange={onOpenChange}
           >
-            {/* {renderMenuByLevel(filteredMenu)} */}
-            {renderMenuItems()}
+            {renderMenuByLevel(filteredMenu)}
           </Menu>
         </Sider>
 

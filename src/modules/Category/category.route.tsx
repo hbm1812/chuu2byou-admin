@@ -9,31 +9,31 @@ const TV  = lazy(() => import("./pages/TV"));
 
 export const CategoryRoutes: IRoute[] = [
   {
-    key: "Category",
-    path: "",
-    label: "Category",
-    icon: <FaCertificate />,
+    key: "CM",
+    code:"CM",
+    parentCode: null,
+    isPrivate: true,
     children: [
       {
         key: "News",
-        path: "/news",
-        label: "news",
+        code: "News",
+        parentCode: "CM",
         element: <News />,
-        icon: <FaCertificate />,
+        isPrivate: true,
       },
       {
-        key: "NewsType",
-        path: "/news-type",
-        label: "News type",
+        key: "NT",
+        code: "NT",
+        parentCode: "CM",
         element: <NewsType />,
-        icon: <FaCertificate />,
+        isPrivate: true,
       },
       {
-        key: "TVBroadcast",
-        path: "/tv-broadcast",
-        label: "Tv broadcast",
+        key: "TvB",
+        code: "TvB",
+        parentCode: "CM",
         element: <TV />,
-        icon: <FaCertificate />,
+        isPrivate: true,
       },
      
     ],

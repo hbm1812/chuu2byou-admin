@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Import CSS của Quill
 import './index.css';
+
 type Props = {
   value: string;
   onChange: (value: string) => void;
   isReadOnly?: boolean;
 };
 
-const RichTextEditor: React.FC<Props> = ({ value, onChange, isReadOnly = false }) => {
+const TextEditor: React.FC<Props> = ({ value, onChange, isReadOnly = false }) => {
   const [content, setContent] = useState<string>(value || '');
 
   useEffect(() => {
@@ -22,7 +23,7 @@ const RichTextEditor: React.FC<Props> = ({ value, onChange, isReadOnly = false }
 
   return (
     <ReactQuill
-    className="react-quill-container"
+      className="react-quill-container"
       theme="snow"
       value={content}
       onChange={handleChange}
@@ -33,6 +34,8 @@ const RichTextEditor: React.FC<Props> = ({ value, onChange, isReadOnly = false }
           ? false
           : [
               [{ 'header': [1, 2, false] }],
+              [{ 'font': [] }], // Thêm lựa chọn font chữ
+              [{ 'size': ['10px', '12px', '14px', '16px', '18px', '20px', '24px', '28px', '32px', '36px', '40px'] }], // Lựa chọn kích cỡ
               ['bold', 'italic', 'underline', 'strike', 'blockquote'],
               [{ 'list': 'ordered' }, { 'list': 'bullet' }],
               ['link', 'image'],
@@ -41,6 +44,8 @@ const RichTextEditor: React.FC<Props> = ({ value, onChange, isReadOnly = false }
       }}
       formats={[
         'header',
+        'font',
+        'size',
         'bold',
         'italic',
         'underline',
@@ -52,7 +57,8 @@ const RichTextEditor: React.FC<Props> = ({ value, onChange, isReadOnly = false }
         'image',
       ]}
     />
+    
   );
 };
 
-export default RichTextEditor;
+export default TextEditor;

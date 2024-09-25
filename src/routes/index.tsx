@@ -9,7 +9,7 @@ import AppNotification from "../components/shared/AppNotification";
 import AppLoading from "../components/shared/AppLoading";
 import {RootState} from "../stores";
 import ForgotPassword from "../layouts/ForgotPassword";
-import DanhMucMauCongViecCon from "../modules/QuanLyDanhMuc/pages/DanhMucMauCongViecCon";
+
 
 const AppRoutes = () => {
   const loading = useSelector((state: RootState) => state.loading.loading);

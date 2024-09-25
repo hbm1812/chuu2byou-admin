@@ -10,24 +10,18 @@ export interface IAuthoriryRoute {
 }
 
 export interface IRoute {
-  // key: string;
-  // path?: string;
-  // label?: string;
-  // code?: string;
-  // parentCode?: string | null | undefined,
-  // element?: ReactNode ;
-  // icon?: ReactNode | string ;
-  // children?: IRoute[]  | null;
-  // isShowMenu?: boolean;
-  // isPrivate?: boolean;
-  // authority?: string;
   key: string;
-  path: string;
-  label: string;
-  element?: ReactNode;
-  icon?: ReactNode;
-  children?: IRoute[];
+  path?: string;
+  label?: string;
+  code?: string;
+  parentCode?: string | null | undefined,
+  element?: ReactNode ;
+  icon?: ReactNode | string ;
+  children?: IRoute[]  | null;
   isShowMenu?: boolean;
+  isPrivate?: boolean;
+  authority?: string;
+
 }
 
 export const routes_url: IRoute[] = [
