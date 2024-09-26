@@ -185,7 +185,6 @@ const TV = (props: Props) => {
         try {
             const response = await getListTV(payload);
             if (response.status) {
-                console.log(response)
                 const updatedData: any = response.result.data.map(
                     (item: any, i: any) => ({
                         ...item,

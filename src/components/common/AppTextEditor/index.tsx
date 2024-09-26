@@ -4,13 +4,13 @@ import 'react-quill/dist/quill.snow.css'; // Import CSS của Quill
 import './index.css';
 
 type Props = {
-  value: string;
+  value: string | number;
   onChange: (value: string) => void;
   isReadOnly?: boolean;
 };
 
 const TextEditor: React.FC<Props> = ({ value, onChange, isReadOnly = false }) => {
-  const [content, setContent] = useState<string>(value || '');
+  const [content, setContent] = useState<string | number>(value || '');
 
   useEffect(() => {
     setContent(value);
@@ -30,9 +30,8 @@ const TextEditor: React.FC<Props> = ({ value, onChange, isReadOnly = false }) =>
       readOnly={isReadOnly}
       placeholder="Nhập nội dung tại đây..."
       modules={{
-        toolbar: isReadOnly
-          ? false
-          : [
+        toolbar: 
+          [
               [{ 'header': [1, 2, false] }],
               [{ 'font': [] }], // Thêm lựa chọn font chữ
               [{ 'size': ['10px', '12px', '14px', '16px', '18px', '20px', '24px', '28px', '32px', '36px', '40px'] }], // Lựa chọn kích cỡ

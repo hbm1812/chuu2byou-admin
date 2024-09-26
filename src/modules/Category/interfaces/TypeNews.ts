@@ -15,6 +15,7 @@ export interface ISearchNews {
     upLoadDate?: string|number|null;
     content?: string|number|null;
     relatedInformation?:string|number|null;
+    titleImage?:string|number|null;
   }
 
 
@@ -29,6 +30,7 @@ export interface ISearchNews {
     relatedInformation?:string|number|null;
     _id?: string | number | null;
     action?:string;
+    titleImage?:string|number|null;
   }
 
 

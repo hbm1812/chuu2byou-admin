@@ -40,18 +40,19 @@ const MListNewsType: React.FC<Props> = ({ typeSearch, setNewsType, newsType, for
     const columnTable: ColumnsType<ITable> = [
         { title: "#", dataIndex: "index", key: "index", },
         {
-            title: "typeCode",
-            dataIndex: "typeCode",
-            key: "typeCode",
-
-        },
-        {
             title: "typeNameJP",
             dataIndex: "typeNameJP",
             key: "typeNameJP",
             render: (text: string) => <div style={{ textAlign: 'left' }}>{text}</div>,
 
         },
+        {
+            title: "typeCode",
+            dataIndex: "typeCode",
+            key: "typeCode",
+
+        },
+       
 
     ];
 

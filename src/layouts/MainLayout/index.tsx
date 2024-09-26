@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Layout, Menu, Dropdown, Avatar } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 import { UserOutlined } from "@ant-design/icons";
-import logoCMS from "../../assets/images/tecapro_logo.png";
+import logoCMS from "../../assets/images/logo.png";
 import { useAccount } from "../../context/ContextAccount";
 import { useMenu } from "../../context/ContextMenu";
 import { AiOutlineMenuFold, AiOutlineMenuUnfold } from "react-icons/ai";
@@ -154,7 +154,7 @@ const MainLayout = (props: Props) => {
             alt="logo"
             onClick={() => navigate("/")}
           />
-          <h2>Hệ thống quản lý triển khai hợp đồng</h2>
+          <h2>中二病でも恋がしたい!</h2>
         </div>
         <div style={{ display: "flex", flexDirection: "row", gap: 40 }}>
           <div style={{ position: "relative", top: 8 }}></div>

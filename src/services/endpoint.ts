@@ -1,6 +1,7 @@
 export const API_CATEGORY = import.meta.env.VITE_API_CATEGORY;
 export const API_SECURITY = import.meta.env.VITE_API_SECURITY;
 export const API_CONTRACT = import.meta.env.VITE_API_CONTRACT;
+export const VITE_API_STAFF_CAST = import .meta.env.VITE_API_STAFF_CAST;
 export const API_REPORT = import.meta.env.VITE_API_REPORT;
 
 export const endpoints = {
@@ -58,6 +59,16 @@ export const endpoints = {
       delete:`tv/delete`, 
     }
     
+  },
+
+  staffCast:{
+    works: {
+      search: `works/search`,
+      add: `works/add`,
+      detail:`works/detail`,
+      update:`works/update`,
+      delete:`works/delete`, 
+    },
   },
 
   main: {

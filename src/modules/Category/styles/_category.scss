@@ -206,7 +206,21 @@
 
 .modal_form_container_2_row_special {
   display: grid;
-  grid-template-columns: 15% 82%; /* Thay đổi tỷ lệ thành 30% và 70% */
+  grid-template-columns: 25% 73%; /* Thay đổi tỷ lệ thành 30% và 70% */
+  gap: 16px;
+
+  .ant-form-item {
+    margin-bottom: 0px !important;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr; /* Khi màn hình nhỏ hơn 768px, mỗi component chiếm 100% */
+  }
+}
+
+.modal_form_container_3_row_special {
+  display: grid;
+  grid-template-columns: 10% 15% 70%; /* Thay đổi tỷ lệ thành 30% và 70% */
   gap: 16px;
 
   .ant-form-item {
@@ -247,7 +261,7 @@
 
 .modal_form_container_4_row {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 12% 29% 29% 25%;
   gap: 16px;
   .ant-form-item {
     margin-bottom: 0px !important;

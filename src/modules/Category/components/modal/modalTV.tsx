@@ -105,10 +105,7 @@ const ModalTV: React.FC<Props> = ({
                         name="tvName"
                         rules={[
                             { required: !isDisable, message: 'TV name cannot be empty' },
-                            {
-                                pattern: /^[a-zA-Z0-9-_.\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\s]+$/,
-                                message: "Only letters, numbers, dashes, underscores, periods, and Japanese characters are allowed.",
-                            },
+                            
                         ]}
                     >
                         <AppInput disableWithPopup={isDisable} />
@@ -130,10 +127,7 @@ const ModalTV: React.FC<Props> = ({
                     label="Description"
                     name="description"
                     rules={[
-                        {
-                            pattern: /^[a-zA-Z0-9-_.\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\s]+$/,
-                            message: "Only letters, numbers, dashes, underscores, periods, and Japanese characters are allowed.",
-                        },
+                       
                     ]}
                 >
                     <AppInput disableWithPopup={isDisable} />

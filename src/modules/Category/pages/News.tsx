@@ -39,10 +39,14 @@ const News: React.FC = () => {
   const [newsCode, setNewsCode] = useState<string[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [thumbnailUrl, setThumbnailUrl] = useState("");
+  const [titleImageUrl, setTitleImageUrl] = useState("");
+  
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [titleImageList, setTitleImageList] = useState<UploadFile[]>([]);
+
 
   const [newsType, setNewsType] = useState<{ id: string; name: string } | null>(null);
-
+  const [content, setContent] = useState("")
 
   const showModalAdd = () => {
     setIsModalOpen(true);
@@ -60,6 +64,7 @@ const News: React.FC = () => {
         setModalType("detail");
         setTitleModal("Detail news");
         setThumbnailUrl(rp.result.thumbnail);
+        setContent(rp.result.content);
       }
     } catch (e) {
       console.error(e);
@@ -78,6 +83,7 @@ const News: React.FC = () => {
         setModalType("edit");
         setTitleModal("Edit news");
         setThumbnailUrl(rp.result.thumbnail);
+        setContent(rp.result.content);
       }
     } catch (e) {
       console.error(e);
@@ -121,6 +127,12 @@ const News: React.FC = () => {
 
   const columnTable: ColumnsType<INewsTable> = [
     { title: "#", dataIndex: "index", key: "index", },
+
+    {
+      title: "Image", dataIndex: "titleImage", key: "titleImage",
+      render: (text: string) => <Image width={50} src={text}  />,
+      width:50,
+    },
 
     {
       title: "title",
@@ -184,7 +196,6 @@ const News: React.FC = () => {
     try {
       const response = await getListNews(payload);
       if (response.status) {
-        console.log(response)
         const updatedData: any = response.result.data.map(
           (item: any, i: any) => ({
             ...item,
@@ -307,6 +318,8 @@ const News: React.FC = () => {
     setNewsType(null);
     setThumbnailUrl("");
     setFileList([]);
+    setTitleImageUrl("");
+    setContent("");
   };
 
   const extraButton = () => {
@@ -383,6 +396,12 @@ const News: React.FC = () => {
             setThumbnailUrl={setThumbnailUrl}
             fileList={fileList}
             setFileList={setFileList}
+            titleImageUrl={titleImageUrl }
+            setTitleImageUrl={setTitleImageUrl}
+            // titleImageList={titleImageList}
+            // setTitleImageList={setTitleImageList}
+            content={content}
+            setContent={setContent}
           />
         </AppModal>
       </PageContainer>
