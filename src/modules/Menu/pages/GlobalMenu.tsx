@@ -1,50 +1,48 @@
-import React, { useEffect, useState } from 'react'
-import { IAddWorks, ISearchWorks, ITableWorks } from '../interfaces/TypeWorks';
 import { Form, message, Popconfirm, Tooltip } from 'antd';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react'
 import useRefresh from '../../../hooks/useRefresh';
+import { IAddGlobalMenu, ISearchGlobalMenu, ITableGlobalMenu, IUpdateGlobalMenu } from '../interfaces/typeGlobalMenu';
+import { useDispatch } from 'react-redux';
 import { startLoading, stopLoading } from '../../../redux/reducers/loadingReducer';
-import { addWorks, deleteWorks, detailWorks, getListWorks, updateWorks } from '../api/works.api';
-import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { ColumnsType } from 'antd/es/table';
+import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { showNotification } from '../../../redux/reducers/notificationReducer';
 import AppButton from '../../../components/common/AppButton';
 import PageContainer from '../../../components/common/PageContainer';
+import SearchNewsType from '../../Category/components/search/NewsTypeSearch';
 import AppTable from '../../../components/common/AppTable';
-import SearchWorks from '../components/search/SearchWorks';
 import AppModal from '../../../components/common/AppModal';
-import ModalWork from '../components/modal/modalWorks';
+import ModalGlobalMenu from '../components/modal/ModalGlobalMenu';
+import { addGlobalMenu, deleteGlobalMenu, detailGlobalMenu, getListGlobalMenu, updateGlobalMenu } from '../api/globalMenu.api';
 
 type Props = {}
 
-const Works = (props: Props) => {
-
+const GlobalMenu: React.FC = () => {
   const dispatch = useDispatch();
-  const [formModal] = Form.useForm<IAddWorks>();
-  const [form] = Form.useForm<ISearchWorks>();
+  const [formModal] = Form.useForm<IAddGlobalMenu>();
+  const [form] = Form.useForm<ISearchGlobalMenu>();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState("add");
   const [titleModal, setTitleModal] = useState(" ");
   const [refresh, refecth] = useRefresh();
-  const [dataTable, setDataTable] = useState<ITableWorks[] | []>([]);
-  const [workData, setWorkData] = useState<ITableWorks>();
-  const [workCode, setWorkCode] = useState<string[]>([]);
+  const [dataTable, setDataTable] = useState<ITableGlobalMenu[] | []>([]);
+  const [dataGlobalMenu, setDataGlobalMenu] = useState<ITableGlobalMenu>();
+  const [globalMenuCode, setGlobalMenuCode] = useState<string[]>([]);
 
   const showModalAdd = () => {
     setIsModalOpen(true);
     setModalType("add");
-    setTitleModal("Add new work");
+    setTitleModal("Add new global menu");
   };
-
   const showModalDetail = async (_id: any) => {
     try {
       dispatch(startLoading())
-      const rp = await detailWorks(_id)
+      const rp = await detailGlobalMenu(_id)
       if (rp.status) {
+        setDataGlobalMenu(rp.result);
         setIsModalOpen(true);
         setModalType("detail");
-        setTitleModal("Detail work");
-        setWorkData(rp.result);
+        setTitleModal("Detail global menu");
       }
     } catch (e) {
       console.error(e);
@@ -56,12 +54,12 @@ const Works = (props: Props) => {
   const showModalEdit = async (_id: any) => {
     try {
       dispatch(startLoading())
-      const rp = await detailWorks(_id)
+      const rp = await detailGlobalMenu(_id)
       if (rp.status) {
+        setDataGlobalMenu(rp.result);
         setIsModalOpen(true);
         setModalType("edit");
-        setTitleModal("Edit work");
-        setWorkData(rp.result);
+        setTitleModal("Edit global menu");
       }
     } catch (e) {
       console.error(e);
@@ -70,7 +68,8 @@ const Works = (props: Props) => {
     }
   };
 
-  const [searchParams, setSearchParams] = useState<ISearchWorks>({
+
+  const [searchParams, setSearchParams] = useState<ISearchGlobalMenu>({
     page: 0,
     size: 10,
   });
@@ -80,11 +79,12 @@ const Works = (props: Props) => {
     total: 0,
   });
 
-  const onSearch = async (values: ISearchWorks) => {
+
+  const onSearch = async (values: ISearchGlobalMenu) => {
     setSearchParams({
       ...searchParams,
-      workName: values.workName && values.workName !== "" ? values.workName : undefined,
-      workCode: values.workCode && values.workCode !== "" ? values.workCode : undefined,
+      key: values.key && values.key !== "" ? values.key : undefined,
+      name: values.name && values.name !== "" ? values.name : undefined,
       page: 0,
       size: 10,
 
@@ -96,31 +96,37 @@ const Works = (props: Props) => {
     }
     );
     refecth();
-
-   
-
   };
 
 
-  const columnTable: ColumnsType<ITableWorks> = [
+  const deleteDataSearch = () => {
+    form.resetFields();
+    form.submit();
+  };
+
+  const columnTable: ColumnsType<ITableGlobalMenu> = [
     { title: "#", dataIndex: "index", key: "index", },
     {
-      title: "Work code",
-      dataIndex: "workCode",
-      key: "workCode",
+      title: "Code",
+      dataIndex: "code",
+      key: "code",
 
     },
-
     {
-      title: "Work name",
-      dataIndex: "workName",
-      key: "workName",
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
       render: (text: string) => <div style={{ textAlign: 'left' }}>{text}</div>,
 
     },
-
     {
-      title: "Action",
+      title: "Parent code",
+      dataIndex: "parentCode",
+      key: "parentCode",
+
+    },
+    {
+      title: "action",
       dataIndex: "action",
       key: "action",
       render: (_, record: any) => (
@@ -164,7 +170,7 @@ const Works = (props: Props) => {
     };
     dispatch(startLoading());
     try {
-      const response = await getListWorks(payload);
+      const response = await getListGlobalMenu(payload);
       if (response.status) {
         const updatedData: any = response.result.data.map(
           (item: any, i: any) => ({
@@ -175,7 +181,7 @@ const Works = (props: Props) => {
         );
 
         setDataTable(updatedData);
-        setWorkCode(updatedData.map((item: ITableWorks) => item.workCode));
+        setGlobalMenuCode(updatedData.map((item: ITableGlobalMenu) => item.code));
         setPagination((prev) => ({
           ...prev,
           total: response.result.total,
@@ -186,7 +192,7 @@ const Works = (props: Props) => {
       setDataTable([]);
       dispatch(
         showNotification({
-          message: "Get data fail.",
+          message: "Get data fail!",
           type: "error",
         })
       );
@@ -207,30 +213,34 @@ const Works = (props: Props) => {
     setPagination(pagination);
   };
 
-  const handleOk = async (values: IAddWorks) => {
-    let payload = {
-      ...values
-    }
+
+  const handleOk = async () => {
     try {
       dispatch(startLoading());
-      if (titleModal === "Add new work" && modalType === "add") {
-        await addWorks(payload).then((response) => {
-          if (response.status) {
-            message.success("Add successful!");
-            refecth();
-            handleCancel();
-          }
-        });
+      const values = await formModal.validateFields();
+
+      if (titleModal === "Add new global menu" && modalType === "add") {
+          const insertBody: IAddGlobalMenu = { ...values };
+          console.log(insertBody,"insert body")
+          await addGlobalMenu(insertBody).then((response) => {
+              if (response.status) {
+                  message.success("Add successful!");
+                  refecth();
+                  handleCancel();
+              }
+          });
       }
 
-      if (titleModal === "Edit work" && modalType === "edit") {
-        await updateWorks(payload, workData?._id).then((response) => {
-          if (response.status) {
-            refecth();
-            handleCancel();
-            message.success("Edit successful!");
-          }
-        });
+      if (titleModal === "Edit global menu" && modalType === "edit") {
+
+          const updateBody: IUpdateGlobalMenu = { ...values };
+          await updateGlobalMenu(updateBody, dataGlobalMenu?._id).then((response) => {
+              if (response.status) {
+                  refecth();
+                  handleCancel();
+                  message.success("Edit successful!");
+              }
+          });
 
       }
     } catch (error: any) {
@@ -249,13 +259,13 @@ const Works = (props: Props) => {
   const deleteVoid = async (_id: any) => {
     try {
       dispatch(startLoading());
-      await deleteWorks(_id).then(response => {
-        if (response.status) {
-          dispatch(showNotification({ message: "Delete successful!", type: "success" }))
-          refecth();
-        } else {
-          // thông báo lỗi
-        }
+      await deleteGlobalMenu(_id).then(response => {
+          if (response.status) {
+              dispatch(showNotification({ message: "Delete successful!", type: "success" }))
+              refecth();
+          } else {
+              // thông báo lỗi
+          }
 
       });
 
@@ -278,31 +288,30 @@ const Works = (props: Props) => {
     setModalType("");
     setTitleModal(" ");
   };
+
+
   const extraButton = () => {
     return (
-      <div className="page_container_header_extra">
+        <div className="page_container_header_extra">
 
-        <AppButton className="default_btn_refresh" title="Import" />
-        <AppButton
-          className="default_btn_add"
-          onClick={showModalAdd}
-          title="Add new"
-        />
-        <AppButton className="default_btn_refresh" title="Export" />
+            <AppButton className="default_btn_refresh" title="Import" />
+            <AppButton
+                className="default_btn_add"
+                onClick={showModalAdd}
+                title="Add new"
+            />
+            <AppButton className="default_btn_refresh" title="Export" />
 
 
-      </div>
+        </div>
     );
-  };
-  const deleteDataSearch = () => {
-    form.resetFields();
-    form.submit();
-  };
+};
+
   return (
     <div>
-    <PageContainer title="Broadcast time" extra={extraButton()}>
+    <PageContainer title="Global menu" extra={extraButton()}>
         <div className="tablePanel">
-            <SearchWorks
+            <SearchNewsType
                 form={form}
                 onSearch={onSearch}
             // searchParams={searchParams}
@@ -321,7 +330,7 @@ const Works = (props: Props) => {
                 />
             </div>
             <AppTable
-                titleTable="Works list"
+                titleTable="News type list"
                 total={pagination.total}
                 columns={columnTable as ColumnsType<any>}
                 data={dataTable}
@@ -337,13 +346,13 @@ const Works = (props: Props) => {
 
         <AppModal width={"80%"} isOpen={isModalOpen} title={titleModal} onClose={handleCancel}
             onSubmit={() => formModal.submit()} typeOpenModal={modalType}>
-            <ModalWork
+            <ModalGlobalMenu
                 onSubmit={handleOk}
                 title={titleModal}
                 form={formModal}
-                workData={workData}
+                dataGlobalMenu={dataGlobalMenu}
                 modalType={modalType}
-                workCode={workCode}
+                globalMenuCode={globalMenuCode}
             />
         </AppModal>
     </PageContainer>
@@ -351,4 +360,4 @@ const Works = (props: Props) => {
   )
 }
 
-export default Works
+export default GlobalMenu

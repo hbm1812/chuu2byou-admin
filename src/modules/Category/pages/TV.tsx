@@ -194,7 +194,7 @@ const TV = (props: Props) => {
                 );
 
                 setDataTable(updatedData);
-                setTv(updatedData.map((item: ITableTV) => item.tvCode));
+                setTvCode(updatedData.map((item: ITableTV) => item.tvCode));
                 setPagination((prev) => ({
                     ...prev,
                     total: response.result.total,

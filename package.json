@@ -38,7 +38,6 @@
     "sass": "^1.77.8",
     "suneditor-react": "^3.6.1",
     "tinymce": "^7.3.0"
-
   },
   "devDependencies": {
     "@types/react": "^18.3.3",

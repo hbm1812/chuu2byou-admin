@@ -25,7 +25,6 @@ const NewsType: React.FC = () => {
     const dispatch = useDispatch();
     const [formModal] = Form.useForm<IAddNewsType>();
     const [form] = Form.useForm<ISearchNewsType>();
-
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalType, setModalType] = useState("add");
     const [titleModal, setTitleModal] = useState(" ");

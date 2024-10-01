@@ -4,6 +4,7 @@ import PhanQuyenTaiKhoanRoutes from "../modules/PhanQuyenTaiKhoan/phanQuyenTaiKh
 import CoreRoutes from "../modules/Core/core.routes";
 import CategoryRoutes from "../modules/Category/category.route";
 import staffCastRoutes from "../modules/StaffCast/staffCast.route";
+import menuRoutes from "../modules/Menu/menu.route";
 
 
 export interface IAuthoriryRoute {
@@ -30,6 +31,7 @@ export const routes_url: IRoute[] = [
   ...PhanQuyenTaiKhoanRoutes,
   ...CategoryRoutes,
   ...staffCastRoutes,
+  ...menuRoutes,
   ...CoreRoutes,
 ];
 

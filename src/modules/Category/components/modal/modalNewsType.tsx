@@ -56,12 +56,8 @@ const ModalNewsType: React.FC<Props> = ({
         autoComplete="off"
       >
         <div className="modal_form_container_2_row">
-          <Form.Item label="コード" name="typeCode" rules={[
-            { required: !isDisable, message: 'コードを入力してください' },
-            {
-              pattern: /^[a-zA-Z0-9-_.\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]+$/,
-              message: "Only letters, numbers, dashes, underscores, periods, and Japanese characters are allowed.",
-            },
+          <Form.Item label="Code" name="typeCode" rules={[
+            { required: !isDisable, message: 'Code is required' },
             {
               validator: validateProductCode
             },
@@ -69,12 +65,8 @@ const ModalNewsType: React.FC<Props> = ({
             <AppInput disableWithPopup={isDisable} />
           </Form.Item>
 
-          <Form.Item label="ニュースタイプ" name="typeNameJP" rules={[
-            { required: !isDisable, message: 'ニュースタイプを入力してください' },
-            {
-              pattern: /^[a-zA-Z0-9-_.\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\s]+$/,
-              message: "Only letters, numbers, dashes, underscores, periods, and Japanese characters are allowed.",
-            },
+          <Form.Item label="Type name" name="typeNameJP" rules={[
+            { required: !isDisable, message: 'Code is required' },
           ]}>
             <AppInput disableWithPopup={isDisable} />
           </Form.Item>

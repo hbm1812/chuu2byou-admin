@@ -31,6 +31,13 @@ export const endpoints = {
       reset: "reset-password",
       verify: "verify-token",
     },
+    globalMenu:{
+      getList:`globalMenu/search`,
+      add:`globalMenu/add`,
+      update:`globalMenu/update`,
+      detail:`globalMenu/detail`,
+      delete:`globalMenu/delete`
+    },
   },
   category: {
     upload:{
