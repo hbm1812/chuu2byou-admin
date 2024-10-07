@@ -1,54 +1,88 @@
 import React, { useEffect, useState } from 'react'
-import { IAddGlobalMenu, ITableGlobalMenu } from '../../interfaces/typeGlobalMenu';
 import { Form, FormInstance } from 'antd';
 import AppInput from '../../../../components/common/AppInput';
 import AppSelected from '../../../../components/common/AppSelected';
+import { IAddMenu, ITableMenu } from '../../interfaces/typeMenu';
+import { ITableMenuType } from '../../interfaces/typeMenuType';
+import { useDispatch } from 'react-redux';
+import useRefresh from '../../../../hooks/useRefresh';
+import { startLoading, stopLoading } from '../../../../redux/reducers/loadingReducer';
+import { getAllMenuTypeNoParam } from '../../api/menuType.api';
+import { showNotification } from '../../../../redux/reducers/notificationReducer';
 
 type Props = {
     title?: string;
-    onSubmit: (values: IAddGlobalMenu) => Promise<void>;
-    form: FormInstance<IAddGlobalMenu>;
-    dataGlobalMenu: ITableGlobalMenu | undefined;
+    onSubmit: (values: IAddMenu) => Promise<void>;
+    form: FormInstance<IAddMenu>;
+    dataMenu: ITableMenu | undefined;
     modalType?: string;
-    globalMenuCode: string[];
+    menuCode: string[];
 }
 
-const ModalGlobalMenu: React.FC<Props> = ({
+const ModalMenu: React.FC<Props> = ({
     title,
     form,
     onSubmit,
-    dataGlobalMenu,
+    dataMenu,
     modalType,
-    globalMenuCode,
+    menuCode,
 }) => {
     const [isDisable, setIsDisable] = useState(false);
+    const [dataMenuType, setDataMenuType] = useState<ITableMenuType[]>([]);
+    const dispatch = useDispatch();
+    const [refresh, refetch] = useRefresh();
+
     useEffect(() => {
         if (modalType === "add") {
             setIsDisable(false);
         }
-        if (dataGlobalMenu && modalType === "edit") {
-            form.setFieldsValue(dataGlobalMenu);
+        if (dataMenu && modalType === "edit") {
+            form.setFieldsValue(dataMenu);
             setIsDisable(false);
         }
-        if (dataGlobalMenu && modalType === "detail") {
-            form.setFieldsValue(dataGlobalMenu);
+        if (dataMenu && modalType === "detail") {
+            form.setFieldsValue(dataMenu);
             setIsDisable(true);
         }
-    }, [dataGlobalMenu, modalType]);
+    }, [dataMenu, modalType]);
 
     const validateProductCode = (_: any, value: string) => {
-        if ((modalType === "edit" && value !== dataGlobalMenu?.code && globalMenuCode.includes(value)) || (modalType === "add" && globalMenuCode.includes(value))) {
+        if ((modalType === "edit" && value !== dataMenu?.code && menuCode.includes(value)) || (modalType === "add" && menuCode.includes(value))) {
             return Promise.reject(new Error("The code already exists"));
         }
         return Promise.resolve();
     };
 
+
+    const getListMenuTypeNoPamam = async () => {
+        dispatch(startLoading());
+        try {
+            const response = await getAllMenuTypeNoParam();
+            if (response.status) {
+                setDataMenuType(response.result);
+            }
+        } catch (error) {
+            dispatch(
+                showNotification({
+                    message: "Lấy dữ liệu thất bại!",
+                    type: "error",
+                })
+            );
+        } finally {
+            dispatch(stopLoading());
+        }
+    };
+
+    useEffect(() => {
+        getListMenuTypeNoPamam();
+    }, [refresh]);
+    
     return (
         <div className="form_qlvt">
             <Form
                 form={form}
                 layout="vertical"
-                name="NewsType"
+                name="Menu"
                 onFinish={(values) => onSubmit(values)}
                 autoComplete="off"
             >
@@ -72,8 +106,22 @@ const ModalGlobalMenu: React.FC<Props> = ({
                     <Form.Item label="Name" name="name" rules={[
                         { required: !isDisable, message: 'Code is required' },
                     ]}>
+                        
                         <AppInput disableWithPopup={isDisable} />
                     </Form.Item>
+
+                    <Form.Item label="Menu type code" name="menuTypeCode" >
+                        <AppSelected
+                          options={dataMenuType.map((item) => ({
+                            value: item.menuTypeCode,
+                            label: item.menuTypeName,
+                        }))}
+                        showSearch
+                        placeholder={isDisable ? "" : "Select menu type"}
+                        filterByLabel
+                        disableWithSelected={isDisable}
+                          />
+                    </Form.Item> 
 
                     <Form.Item label="Parent code" name="parentCode" >
                         <AppInput disableWithPopup={isDisable} />
@@ -119,4 +167,4 @@ const ModalGlobalMenu: React.FC<Props> = ({
     )
 }
 
-export default ModalGlobalMenu
+export default ModalMenu

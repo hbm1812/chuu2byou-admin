@@ -1,48 +1,48 @@
 import { Form, message, Popconfirm, Tooltip } from 'antd';
 import React, { useEffect, useState } from 'react'
 import useRefresh from '../../../hooks/useRefresh';
-import { IAddGlobalMenu, ISearchGlobalMenu, ITableGlobalMenu, IUpdateGlobalMenu } from '../interfaces/typeGlobalMenu';
-import { useDispatch } from 'react-redux';
 import { startLoading, stopLoading } from '../../../redux/reducers/loadingReducer';
 import { ColumnsType } from 'antd/es/table';
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { showNotification } from '../../../redux/reducers/notificationReducer';
 import AppButton from '../../../components/common/AppButton';
 import PageContainer from '../../../components/common/PageContainer';
-import SearchNewsType from '../../Category/components/search/NewsTypeSearch';
 import AppTable from '../../../components/common/AppTable';
 import AppModal from '../../../components/common/AppModal';
-import ModalGlobalMenu from '../components/modal/ModalGlobalMenu';
-import { addGlobalMenu, deleteGlobalMenu, detailGlobalMenu, getListGlobalMenu, updateGlobalMenu } from '../api/globalMenu.api';
+import { useDispatch } from 'react-redux';
+import { IAddMenu, ISearchMenu, ITableMenu, IUpdateMenu } from '../interfaces/typeMenu';
+import { addMenu, deleteMenu, detailMenu, getListMenu, updateMenu } from '../api/menu.api';
+import ModalMenu from '../components/modal/ModalMenu';
+import SearchMenu from '../components/search/SearchMenu';
 
 type Props = {}
 
-const GlobalMenu: React.FC = () => {
+const Menu: React.FC = () => {
   const dispatch = useDispatch();
-  const [formModal] = Form.useForm<IAddGlobalMenu>();
-  const [form] = Form.useForm<ISearchGlobalMenu>();
+  const [formModal] = Form.useForm<IAddMenu>();
+  const [form] = Form.useForm<ISearchMenu>();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState("add");
   const [titleModal, setTitleModal] = useState(" ");
   const [refresh, refecth] = useRefresh();
-  const [dataTable, setDataTable] = useState<ITableGlobalMenu[] | []>([]);
-  const [dataGlobalMenu, setDataGlobalMenu] = useState<ITableGlobalMenu>();
-  const [globalMenuCode, setGlobalMenuCode] = useState<string[]>([]);
+  const [dataTable, setDataTable] = useState<ITableMenu[] | []>([]);
+  const [dataMenu, setDataMenu] = useState<ITableMenu>();
+  const [menuCode, setMenuCode] = useState<string[]>([]);
 
   const showModalAdd = () => {
     setIsModalOpen(true);
     setModalType("add");
-    setTitleModal("Add new global menu");
+    setTitleModal("Add new menu");
   };
   const showModalDetail = async (_id: any) => {
     try {
       dispatch(startLoading())
-      const rp = await detailGlobalMenu(_id)
+      const rp = await detailMenu(_id)
       if (rp.status) {
-        setDataGlobalMenu(rp.result);
+        setDataMenu(rp.result);
         setIsModalOpen(true);
         setModalType("detail");
-        setTitleModal("Detail global menu");
+        setTitleModal("Detail menu");
       }
     } catch (e) {
       console.error(e);
@@ -54,12 +54,12 @@ const GlobalMenu: React.FC = () => {
   const showModalEdit = async (_id: any) => {
     try {
       dispatch(startLoading())
-      const rp = await detailGlobalMenu(_id)
+      const rp = await detailMenu(_id)
       if (rp.status) {
-        setDataGlobalMenu(rp.result);
+        setDataMenu(rp.result);
         setIsModalOpen(true);
         setModalType("edit");
-        setTitleModal("Edit global menu");
+        setTitleModal("Edit menu");
       }
     } catch (e) {
       console.error(e);
@@ -69,7 +69,7 @@ const GlobalMenu: React.FC = () => {
   };
 
 
-  const [searchParams, setSearchParams] = useState<ISearchGlobalMenu>({
+  const [searchParams, setSearchParams] = useState<ISearchMenu>({
     page: 0,
     size: 10,
   });
@@ -80,7 +80,7 @@ const GlobalMenu: React.FC = () => {
   });
 
 
-  const onSearch = async (values: ISearchGlobalMenu) => {
+  const onSearch = async (values: ISearchMenu) => {
     setSearchParams({
       ...searchParams,
       key: values.key && values.key !== "" ? values.key : undefined,
@@ -104,7 +104,7 @@ const GlobalMenu: React.FC = () => {
     form.submit();
   };
 
-  const columnTable: ColumnsType<ITableGlobalMenu> = [
+  const columnTable: ColumnsType<ITableMenu> = [
     { title: "#", dataIndex: "index", key: "index", },
     {
       title: "Code",
@@ -120,9 +120,15 @@ const GlobalMenu: React.FC = () => {
 
     },
     {
-      title: "Parent code",
-      dataIndex: "parentCode",
-      key: "parentCode",
+      title: "Menu type code",
+      dataIndex: "menuTypeCode",
+      key: "menuTypeCode",
+
+    },
+    {
+      title: "Menu level",
+      dataIndex: "menuLevel",
+      key: "menuLevel",
 
     },
     {
@@ -170,7 +176,7 @@ const GlobalMenu: React.FC = () => {
     };
     dispatch(startLoading());
     try {
-      const response = await getListGlobalMenu(payload);
+      const response = await getListMenu(payload);
       if (response.status) {
         const updatedData: any = response.result.data.map(
           (item: any, i: any) => ({
@@ -181,7 +187,7 @@ const GlobalMenu: React.FC = () => {
         );
 
         setDataTable(updatedData);
-        setGlobalMenuCode(updatedData.map((item: ITableGlobalMenu) => item.code));
+        setMenuCode(updatedData.map((item: ITableMenu) => item.code));
         setPagination((prev) => ({
           ...prev,
           total: response.result.total,
@@ -218,29 +224,25 @@ const GlobalMenu: React.FC = () => {
     try {
       dispatch(startLoading());
       const values = await formModal.validateFields();
-
-      if (titleModal === "Add new global menu" && modalType === "add") {
-          const insertBody: IAddGlobalMenu = { ...values };
-          console.log(insertBody,"insert body")
-          await addGlobalMenu(insertBody).then((response) => {
-              if (response.status) {
-                  message.success("Add successful!");
-                  refecth();
-                  handleCancel();
-              }
-          });
+      if (titleModal === "Add new menu" && modalType === "add") {
+        await addMenu(values).then((response) => {
+          if (response.status) {
+            message.success("Add successful!");
+            refecth();
+            handleCancel();
+          }
+        });
       }
 
-      if (titleModal === "Edit global menu" && modalType === "edit") {
+      if (titleModal === "Edit menu" && modalType === "edit") {
 
-          const updateBody: IUpdateGlobalMenu = { ...values };
-          await updateGlobalMenu(updateBody, dataGlobalMenu?._id).then((response) => {
-              if (response.status) {
-                  refecth();
-                  handleCancel();
-                  message.success("Edit successful!");
-              }
-          });
+        await updateMenu(values, dataMenu?._id).then((response) => {
+          if (response.status) {
+            refecth();
+            handleCancel();
+            message.success("Edit successful!");
+          }
+        });
 
       }
     } catch (error: any) {
@@ -259,13 +261,13 @@ const GlobalMenu: React.FC = () => {
   const deleteVoid = async (_id: any) => {
     try {
       dispatch(startLoading());
-      await deleteGlobalMenu(_id).then(response => {
-          if (response.status) {
-              dispatch(showNotification({ message: "Delete successful!", type: "success" }))
-              refecth();
-          } else {
-              // thông báo lỗi
-          }
+      await deleteMenu(_id).then(response => {
+        if (response.status) {
+          dispatch(showNotification({ message: "Delete successful!", type: "success" }))
+          refecth();
+        } else {
+          // thông báo lỗi
+        }
 
       });
 
@@ -292,72 +294,71 @@ const GlobalMenu: React.FC = () => {
 
   const extraButton = () => {
     return (
-        <div className="page_container_header_extra">
+      <div className="page_container_header_extra">
 
-            <AppButton className="default_btn_refresh" title="Import" />
-            <AppButton
-                className="default_btn_add"
-                onClick={showModalAdd}
-                title="Add new"
-            />
-            <AppButton className="default_btn_refresh" title="Export" />
+        <AppButton className="default_btn_refresh" title="Import" />
+        <AppButton
+          className="default_btn_add"
+          onClick={showModalAdd}
+          title="Add new"
+        />
+        <AppButton className="default_btn_refresh" title="Export" />
 
 
-        </div>
+      </div>
     );
-};
+  };
 
   return (
     <div>
-    <PageContainer title="Global menu" extra={extraButton()}>
+      <PageContainer title="Menu" extra={extraButton()}>
         <div className="tablePanel">
-            <SearchNewsType
-                form={form}
-                onSearch={onSearch}
-            // searchParams={searchParams}
+          <SearchMenu
+          // form={form}
+          // onSearch={onSearch}
+          // searchParams={searchParams}
+          />
+          <div className="btn_search_qldm">
+            <AppButton
+              className="default_btn_search"
+              title="Search"
+              onClick={() => form.submit()}
             />
-            <div className="btn_search_qldm">
-                <AppButton
-                    className="default_btn_search"
-                    title="Search"
-                    onClick={() => form.submit()}
-                />
 
-                <AppButton
-                    className="default_btn_refresh"
-                    title="Clear"
-                    onClick={() => deleteDataSearch()}
-                />
-            </div>
-            <AppTable
-                titleTable="News type list"
-                total={pagination.total}
-                columns={columnTable as ColumnsType<any>}
-                data={dataTable}
-                pagination={{
-                    current: pagination.current,
-                    pageSize: pagination.pageSize,
-                    total: pagination.total,
-                }}
-                onChange={handleTableChange}
+            <AppButton
+              className="default_btn_refresh"
+              title="Clear"
+              onClick={() => deleteDataSearch()}
             />
+          </div>
+          <AppTable
+            titleTable="Menu list"
+            total={pagination.total}
+            columns={columnTable as ColumnsType<any>}
+            data={dataTable}
+            pagination={{
+              current: pagination.current,
+              pageSize: pagination.pageSize,
+              total: pagination.total,
+            }}
+            onChange={handleTableChange}
+          />
         </div>
 
-
         <AppModal width={"80%"} isOpen={isModalOpen} title={titleModal} onClose={handleCancel}
-            onSubmit={() => formModal.submit()} typeOpenModal={modalType}>
-            <ModalGlobalMenu
-                onSubmit={handleOk}
-                title={titleModal}
-                form={formModal}
-                dataGlobalMenu={dataGlobalMenu}
-                modalType={modalType}
-                globalMenuCode={globalMenuCode}
-            />
+          onSubmit={() => formModal.submit()} typeOpenModal={modalType}>
+          <ModalMenu
+            onSubmit={handleOk}
+            title={titleModal}
+            form={formModal}
+            dataMenu={dataMenu}
+            modalType={modalType}
+            menuCode={menuCode}
+          />
         </AppModal>
-    </PageContainer>
-</div>
+      </PageContainer>
+    </div>
   )
 }
 
-export default GlobalMenu
+export default Menu

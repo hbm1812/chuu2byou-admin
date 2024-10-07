@@ -2,9 +2,10 @@
 import { FaCertificate } from "react-icons/fa6";
 import { IRoute } from "../../routes/routes";
 import { lazy } from "react";
-import GlobalMenu from "./pages/GlobalMenu";
-import SupMenu from "./pages/SupMenu";
 
+
+const Menu = lazy(() => import("./pages/Menu"));
+const MenuType = lazy(() => import("./pages/MenuType"));
 
 
 export const menuRoutes: IRoute[] = [
@@ -14,18 +15,19 @@ export const menuRoutes: IRoute[] = [
         parentCode: null,
         isPrivate: true,
         children: [
+            
             {
-                key: "GM",
-                code: "GM",
+                key: "MT",
+                code: "MT",
                 parentCode: "MM",
-                element: <GlobalMenu/>,
+                element: <MenuType/>,
                 isPrivate: true,
             },
             {
-                key: "SupM",
-                code: "SupM",
+                key: "Menu",
+                code: "Menu",
                 parentCode: "MM",
-                element: <SupMenu/>,
+                element: <Menu/>,
                 isPrivate: true,
             },
 

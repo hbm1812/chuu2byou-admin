@@ -14,7 +14,6 @@ const SearchNewsType: React.FC<Props> = ({
     onSearch,
 }) => {
 
-
     return (
         <div className='search_News'>
             <Form

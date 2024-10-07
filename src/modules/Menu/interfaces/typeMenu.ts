@@ -1,4 +1,4 @@
-export interface IAddGlobalMenu{
+export interface IAddMenu{
     key?:string|number|null;
     code?:string|number|null;
     parentCode?: string|number|null;
@@ -7,11 +7,13 @@ export interface IAddGlobalMenu{
     icon?: string|number|null;
     landing?: string|number|null;
     showMenu?:string|number|null;
-    children?:ITableGlobalMenu[];
+    menuTypeCode?:string|number|null;
+    menuLevel?:string|number|null;
+    children?:ITableMenu[];
   }
   
 
-  export interface ISearchGlobalMenu {
+  export interface ISearchMenu {
     page?: number;
     size?: number;
     sorts?: string[];
@@ -20,7 +22,7 @@ export interface IAddGlobalMenu{
   }
 
 
-  export interface ITableGlobalMenu {
+  export interface ITableMenu {
     index?: string | number | null;
     key?:string|number|null;
     code?:string|number|null;
@@ -30,12 +32,14 @@ export interface IAddGlobalMenu{
     icon?: string|number|null;
     landing?: string|number|null;
     showMenu?:string|number|null;
-    children?:ITableGlobalMenu[];
+    menuTypeCode?:string|number|null;
+    menuLevel?:string|number|null;
+    children?:ITableMenu[];
     _id?: string | number | null;
   }
 
   
-  export interface IUpdateGlobalMenu {
+  export interface IUpdateMenu {
     key?:string|number|null;
     code?:string|number|null;
     parentCode?: string|number|null;
@@ -44,12 +48,14 @@ export interface IAddGlobalMenu{
     icon?: string|number|null;
     landing?: string|number|null;
     showMenu?:string|number|null;
-    children?:ITableGlobalMenu[];
+    menuTypeCode?:string|number|null;
+    menuLevel?:string|number|null;
+    children?:ITableMenu[];
     _id?: string | number | null;
   }
 
-  export interface IResultGlobalMenu {
-    data: ITableGlobalMenu[];
+  export interface IResultMenu {
+    data: ITableMenu[];
     total: number;
     totalPage: number;
   }

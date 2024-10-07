@@ -31,12 +31,20 @@ export const endpoints = {
       reset: "reset-password",
       verify: "verify-token",
     },
-    globalMenu:{
-      getList:`globalMenu/search`,
-      add:`globalMenu/add`,
-      update:`globalMenu/update`,
-      detail:`globalMenu/detail`,
-      delete:`globalMenu/delete`
+    menu:{
+      getList:`menu/search`,
+      add:`menu/add`,
+      update:`menu/update`,
+      detail:`menu/detail`,
+      delete:`menu/delete`
+    },
+    menuType:{
+      getNoParams:`menuType/get-menuType-no-params`,
+      getList:`menuType/search`,
+      add:`menuType/add`,
+      update:`menuType/update`,
+      detail:`menuType/detail`,
+      delete:`menuType/delete`
     },
   },
   category: {
